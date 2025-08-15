@@ -7,7 +7,7 @@ export default {
   ignoreDeadLinks: true,
 
   themeConfig: {
-    logo: "/logo.svg",
+    logo: "/logo.png",
     siteTitle: "CCI Web",
     search: {
       provider: "local",
@@ -16,19 +16,10 @@ export default {
     nav: [
       { text: "Home", link: "/" },
       { text: "Docs", link: "/docs" },
-
-      // { text: "About", link: "/about" },
-      // { text: "Contact", link: "/contact" },
-      // { text: "Guide", link: "/guide" },
-      // { text: "Configs", link: "/configs" },
       {
         // Dropdown Menu
         text: "Version",
-        items: [
-          { text: "v0.0.1", link: "/item-1" },
-          { text: "v0.0.2", link: "/item-2" },
-          { text: "v0.0.3", link: "/item-3" },
-        ],
+        items: [{ text: "v0.0.1", link: "/version/v0.0.1" }],
       },
     ],
     // Social Icons
@@ -36,115 +27,69 @@ export default {
     // Sidebar
     sidebar: [
       {
-        text: "Library",
+        text: "Getting Started",
         collapsible: true,
         collapsed: false,
         items: [
+          { text: "Overview", link: "/version/v0.0.1/overview" },
+          { text: "Installation", link: "/version/v0.0.1/installation" },
+          { text: "Usage Guide", link: "/version/v0.0.1/usage" },
+          { text: "Examples", link: "/version/v0.0.1/examples" },
+          { text: "Troubleshooting", link: "/version/v0.0.1/troubleshooting" },
+        ],
+      },
+      {
+        text: "Library",
+        collapsible: true,
+        collapsed: true,
+        items: [
           {
             text: "@cci-web/core",
-            collapsed: false,
+            collapsed: true,
             items: [
-              { text: "Introduction", link: "/core/introduction" },
-              { text: "Installation & Requirements", link: "/core/installation" },
-              { text: "Quick Start", link: "/core/quick-start" },
+              { text: "Introduction", link: "/version/v0.0.1/core/introduction" },
+              { text: "Installation & Requirements", link: "/version/v0.0.1/core/installation" },
+              { text: "Quick Start", link: "/version/v0.0.1/core/quick-start" },
               {
-                text: "Constants",
+                text: "Config Module",
                 collapsible: true,
                 collapsed: false,
                 items: [
                   {
                     text: "Introduction",
-                    link: "/core/config/introduction",
+                    link: "/version/v0.0.1/core/config/introduction",
                   },
-                  { text: "AppAggregateConfig", link: "/core/config/app-aggregate-config" },
-                  { text: "Runtime Access", link: "/core/config/runtime-access" },
-                  { text: "BREAKPOINTS_VALUE", link: "/core/constants/breakpoint-constants" },
-                  { text: "ConfigValues", link: "/core/constants/config-enum" },
-                  { text: "ViewType", link: "/core/constants/view-type-enum" },
+                  { text: "Constants", link: "/version/v0.0.1/core/config/constants" },
+                  { text: "Interceptors", link: "/version/v0.0.1/core/config/interceptors" },
+                  { text: "Models", link: "/version/v0.0.1/core/config/models" },
+                  { text: "Providers", link: "/version/v0.0.1/core/config/providers" },
+                  { text: "Services", link: "/version/v0.0.1/core/config/services" },
+                  { text: "Utils", link: "/version/v0.0.1/core/config/utils" },
                 ],
               },
-              {
-                text: "Helpers",
-                collapsible: false,
-                collapsed: false,
-                items: [
-                  {
-                    text: "Introduction",
-                    link: "/core/helpers/introduction",
-                  },
-                  { text: "baseOwlOption", link: "/core/helpers/base-owl-option" },
-                  { text: "onDraggingToStopLink", link: "/core/helpers/on-dragging-to-stop-link" },
-                ],
-              },
-              {
-                text: "Interceptors",
-                collapsible: false,
-                collapsed: false,
-                items: [
-                  {
-                    text: "Introduction",
-                    link: "/core/interceptors/introduction",
-                  },
-                  { text: "duplicateRequestInterceptor", link: "/core/interceptors/duplicate-request" },
-                  { text: "loadingBarInterceptor", link: "/core/interceptors/loading-bar" },
-                ],
-              },
-              {
-                text: "Models",
-                collapsible: true,
-                collapsed: false,
-                items: [
-                  { text: "AppUserPrincipal", link: "/core/models/app-user-principal" },
-                  { text: "BreadcrumbRes", link: "/core/models/breadcrumb-res" },
-                  { text: "Paging", link: "/core/models/paging" },
-                  { text: "SeoSocialShareData", link: "/core/models/seo-social-share-data" },
-                ],
-              },
-              {
-                text: "Providers",
-                collapsible: true,
-                collapsed: false,
-                items: [
-                  { text: "CCI_WEB_APP_NAME", link: "/core/providers/app-config" },
-                  { text: "getBaseProviders", link: "/core/providers/base-providers" },
-                ],
-              },
-              {
-                text: "Services",
-                collapsible: true,
-                collapsed: false,
-                items: [
-                  {
-                    text: "Introduction",
-                    link: "/core/services/introduction",
-                  },
-                  { text: "ApiService", link: "/core/services/api-service" },
-                  { text: "BreakpointService", link: "/core/services/breakpoint-service" },
-                  { text: "CacheService", link: "/core/services/cache-service" },
-                  // { text: "CookieService", link: "/core/services/cookie-service" },
-                  // { text: "LocalStorageService", link: "/core/services/local-storage-service" },
-                  // { text: "SeoService", link: "/core/services/seo-service" },
-                ],
-              },
-              {
-                text: "Utils",
-                collapsible: true,
-                collapsed: false,
-                items: [
-                  { text: "fetchFederationManifest", link: "/core/utils/fetch-federation-manifest" },
-                  { text: "SubSink", link: "/core/utils/sub-sink" },
-                  { text: "UnsubscribeOnDestroyAdapter", link: "/core/utils/unsubscribe-on-destroy-adapter" },
-                  { text: "FlagBasedPreloadingStrategy", link: "/core/utils/flag-based-preloading-strategy" },
-                ],
-              },
+
             ],
           },
           {
             text: "@cci-web/shared",
             collapsed: true,
             items: [
-              { text: "Introduction", link: "/shared/introduction" },
-              { text: "Installation & Requirements", link: "/shared/installation" },
+              { text: "Introduction", link: "/version/v0.0.1/shared/introduction" },
+              { text: "Installation & Requirements", link: "/version/v0.0.1/shared/installation" },
+              { text: "Components", link: "/version/v0.0.1/shared/components" },
+              { text: "Directives", link: "/version/v0.0.1/shared/directives" },
+              { text: "Pipes", link: "/version/v0.0.1/shared/pipes" },
+              { text: "Provider", link: "/version/v0.0.1/shared/provider" },
+              { text: "Utils", link: "/version/v0.0.1/shared/utils" },
+            ],
+          },
+          {
+            text: "@cci-web/server",
+            collapsed: true,
+            items: [
+              { text: "Introduction", link: "/version/v0.0.1/server/introduction" },
+              { text: "Installation & Requirements", link: "/version/v0.0.1/server/installation" },
+              { text: "Node Server", link: "/version/v0.0.1/server/node-server" },
             ],
           },
         ],
@@ -160,8 +105,8 @@ export default {
       text: "Edit this page on GitHub",
     },
     footer: {
-      message: "Released under the MIT License.",
-      copyright: "Copyright © 2024-present Adocs",
+      message: "Được phát triển bởi team CCI",
+      copyright: "Copyright © 2025-present Adocs",
     },
     markdown: {
       theme: "material-palenight",

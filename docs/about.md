@@ -9,7 +9,6 @@ Dự án này được phát triển và duy trì bởi đội ngũ lập trình
 Chúng tôi luôn hướng tới việc mang đến giải pháp chất lượng, dễ bảo trì và sáng tạo cho người dùng.
 </p>
 
-
 Even satire code snippets with syntax highlighting are also supported. 😅
 
 ```js
@@ -22,4 +21,4 @@ const lang = prompt("What is your favorite programming language?");
 
 Of course, images are not left out.
 
-<img src="/logo.svg" alt="adocs logo">
+<img src="./public/Logo.png" alt="adocs logo">

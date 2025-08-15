@@ -13,24 +13,8 @@ hero:
     - theme: brand
       text: Bắt đầu
       link: /core/introduction
-    - theme: alt
-      text: Xem trên GitHub
-      link: https://github.com/your-org/cci-web
 
 # Features section
-features:
-  - icon: ⚡️
-    title: Adocs, The DX that can't be beat
-    details: Lorem ipsum...
-  - icon: 🎉
-    title: Power of Vue meets Markdown
-    details: Lorem ipsum...
-  - icon: 🔥
-    title: Simple and minimal, always
-    details: Lorem ipsum...
-  - icon: 🎀
-    title: Stylish and cool
-    details: Lorem ipsum...
 
 # Meta property
 head:
@@ -59,9 +43,22 @@ head:
 ---
 
 <!-- Custom home layout -->
-<div class="custom-layout">
+<!-- <div class="custom-layout">
   <h1>🏀</h1>
   <h1>Custom Layout</h1>
   <p>This section was added using plain HTML and CSS.</p>
   <a href="" target="_blank" class="btn">Source Code</a>
-</div>
+</div> -->
+<!-- features:
+  - icon: ⚡️
+    title: Adocs, The DX that can't be beat
+    details: Lorem ipsum...
+  - icon: 🎉
+    title: Power of Vue meets Markdown
+    details: Lorem ipsum...
+  - icon: 🔥
+    title: Simple and minimal, always
+    details: Lorem ipsum...
+  - icon: 🎀
+    title: Stylish and cool
+    details: Lorem ipsum... -->

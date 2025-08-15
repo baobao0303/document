@@ -1,4 +1,4 @@
-## 6. Services
+## Services
 
 Các service cung cấp business logic và utilities.
 

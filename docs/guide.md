@@ -345,11 +345,13 @@ hero:
     - theme: brand
       text: Bắt đầu
       link: /core/introduction
-    - theme: alt
-      text: Xem trên GitHub
-      link: https://github.com/your-org/cci-web
+
 ---
 ```
+
+<!--     - theme: alt
+      text: Xem trên GitHub
+      link: https://github.com/your-org/cci-web -->
 
 ## Features Section
 

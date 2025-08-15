@@ -1,4 +1,4 @@
-## PagingConfig & PagingResponse<T>
+## PagingConfig & PagingResponse\<T\>
 
 **Mô tả**: Interfaces cho pagination functionality
 

@@ -51,27 +51,13 @@ const userData = {
 
 const user = new AppUserPrincipal(userData);
 console.log(user.customer_name); // "John Doe"
-
-// Sử dụng trong service
-@Injectable()
-export class AuthService {
-  private currentUser: AppUserPrincipal | null = null;
-
-  setCurrentUser(userData: any) {
-    this.currentUser = new AppUserPrincipal(userData);
-  }
-
-  getCurrentUser(): AppUserPrincipal | null {
-    return this.currentUser;
-  }
-}
 ```
 
 ### 2. BreadcrumbRes
 
 **File**: `breadcrumb.res.ts`
 
-**Mô tả**: Interface định nghĩa cấu trúc dữ liệu cho breadcrumb navigation.
+**Mô tả**: Model cho dữ liệu breadcrumb navigation.
 
 **Cấu trúc**:
 
@@ -79,15 +65,15 @@ export class AuthService {
 export interface BreadcrumbRes {
   title: string; // Tiêu đề hiển thị
   link: string; // Đường dẫn liên kết
+  isActive: boolean; // Trạng thái active
 }
 ```
 
 **Đối tượng sử dụng**:
 
-- Breadcrumb components
-- Navigation services
-- SEO metadata generation
-- Page routing logic
+- Navigation components
+- SEO breadcrumb structured data
+- Page header components
 
 **Ví dụ sử dụng**:
 
@@ -96,10 +82,9 @@ import { BreadcrumbRes } from "@cci-web/core";
 
 // Tạo breadcrumb cho trang sản phẩm
 const breadcrumbs: BreadcrumbRes[] = [
-  { title: "Trang chủ", link: "/" },
-  { title: "Sản phẩm", link: "/products" },
-  { title: "Điện thoại", link: "/products/phones" },
-  { title: "iPhone 15", link: "/products/phones/iphone-15" },
+  { title: "Trang chủ", link: "/", isActive: false },
+  { title: "Sản phẩm", link: "/products", isActive: false },
+  { title: "Laptop", link: "/products/laptop", isActive: true },
 ];
 
 // Component sử dụng
@@ -121,27 +106,26 @@ export class BreadcrumbComponent {
 }
 ```
 
-### 3. PagingConfig
+### 3. Paging
 
-**File**: `paging.config.ts`
+**File**: `paging.ts`
 
-**Mô tả**: Interface cấu hình cho phân trang dữ liệu.
+**Mô tả**: Model cho cấu hình phân trang.
 
 **Cấu trúc**:
 
 ```typescript
 export interface PagingConfig {
   TotalRecord: number; // Tổng số bản ghi
-  CurrentPageIndex: number; // Chỉ số trang hiện tại
-  PageIndex: number; // Chỉ số trang (có thể khác CurrentPageIndex)
-  PageSize: number; // Số bản ghi trên mỗi trang
+  CurrentPageIndex: number; // Trang hiện tại (1-based)
+  PageIndex: number; // Index trang (0-based)
+  PageSize: number; // Số item trên mỗi trang
 }
 ```
 
 **Đối tượng sử dụng**:
 
-- Pagination components
-- Data table services
+- Data table components
 - API request parameters
 - List view components
 
@@ -158,30 +142,23 @@ const defaultPaging: PagingConfig = {
   PageSize: 20,
 };
 
-// Service xử lý phân trang
-@Injectable()
-export class PaginationService {
-  calculateTotalPages(config: PagingConfig): number {
+// Helper functions
+class PagingHelper {
+  static calculateTotalPages(config: PagingConfig): number {
     return Math.ceil(config.TotalRecord / config.PageSize);
   }
 
-  getPageRange(config: PagingConfig): { start: number; end: number } {
-    const start = (config.CurrentPageIndex - 1) * config.PageSize + 1;
-    const end = Math.min(start + config.PageSize - 1, config.TotalRecord);
-    return { start, end };
-  }
-
-  hasNextPage(config: PagingConfig): boolean {
+  static hasNextPage(config: PagingConfig): boolean {
     return config.CurrentPageIndex < this.calculateTotalPages(config);
   }
 
-  hasPreviousPage(config: PagingConfig): boolean {
+  static hasPreviousPage(config: PagingConfig): boolean {
     return config.CurrentPageIndex > 1;
   }
 }
 ```
 
-### 4. PagingResponse<T>
+### 4. PagingResponse
 
 **File**: `paging.res.ts`
 
@@ -196,46 +173,40 @@ export interface PagingResponse<T> {
   TotalRecord: number; // Tổng số bản ghi
   CurrentPageIndex: number; // Trang hiện tại
   PageSize: number; // Kích thước trang
-  Records: [T]; // Mảng dữ liệu
+  Records: T[]; // Mảng dữ liệu
 }
 ```
 
 **Đối tượng sử dụng**:
 
-- API response handling
-- Data services
-- List components
-- Search result processing
+- API service responses
+- Data loading components
+- Pagination controls
 
 **Ví dụ sử dụng**:
 
 ```typescript
 import { PagingResponse } from "@cci-web/core";
 
-// Interface cho sản phẩm
 interface Product {
   id: number;
   name: string;
   price: number;
 }
 
-// Service xử lý API
-@Injectable()
-export class ProductService {
-  getProducts(page: number, size: number): Observable<PagingResponse<Product>> {
-    return this.http.get<PagingResponse<Product>>(`/api/products`, {
-      params: { page: page.toString(), size: size.toString() },
-    });
-  }
+// Service method
+getProducts(page: number, size: number): Observable<PagingResponse<Product>> {
+  return this.http.get<PagingResponse<Product>>(`/api/products`, {
+    params: { page: page.toString(), size: size.toString() }
+  });
+}
 
-  processProductResponse(response: PagingResponse<Product>) {
-    if (response.StatusCode === 200) {
-      console.log(`Loaded ${response.Records.length} of ${response.TotalRecord} products`);
-      return response.Records;
-    } else {
-      throw new Error(response.ErrorMessage);
-    }
-  }
+processProductResponse(response: PagingResponse<Product>) {
+  console.log(`Total: ${response.TotalRecord}`);
+  console.log(`Current Page: ${response.CurrentPageIndex}`);
+  response.Records.forEach(product => {
+    console.log(product.name);
+  });
 }
 
 // Component sử dụng
@@ -247,8 +218,7 @@ export class ProductService {
       [totalRecords]="totalRecords"
       [currentPage]="currentPage"
       [pageSize]="pageSize"
-      (pageChange)="onPageChange($event)"
-    >
+      (pageChange)="onPageChange($event)">
     </app-pagination>
   `,
 })
@@ -258,18 +228,17 @@ export class ProductListComponent {
   currentPage = 1;
   pageSize = 20;
 
-  constructor(private productService: ProductService) {}
-
-  loadProducts() {
-    this.productService.getProducts(this.currentPage, this.pageSize).subscribe((response) => {
-      this.products = response.Records;
-      this.totalRecords = response.TotalRecord;
-    });
-  }
-
   onPageChange(page: number) {
     this.currentPage = page;
     this.loadProducts();
+  }
+
+  loadProducts() {
+    this.productService.getProducts(this.currentPage, this.pageSize)
+      .subscribe(response => {
+        this.products = response.Records;
+        this.totalRecords = response.TotalRecord;
+      });
   }
 }
 ```
@@ -278,78 +247,49 @@ export class ProductListComponent {
 
 **File**: `seo-social-share-data.ts`
 
-**Mô tả**: Interface định nghĩa metadata cho SEO và social media sharing.
+**Mô tả**: Model cho dữ liệu SEO và social media sharing.
 
 **Cấu trúc**:
 
 ```typescript
 export interface SeoSocialShareData {
-  title?: string; // Tiêu đề trang
-  keywords?: string; // Từ khóa SEO
-  description?: string; // Mô tả trang
-  image?: string; // Hình ảnh đại diện
-  url?: string; // URL canonical
-  type?: string; // Loại nội dung (article, product, etc.)
-  author?: string; // Tác giả
-  section?: string; // Phân mục
-  published?: string; // Ngày xuất bản
-  modified?: string; // Ngày chỉnh sửa
+  title: string; // Tiêu đề trang
+  description: string; // Mô tả trang
+  image: string; // URL hình ảnh đại diện
+  url: string; // URL canonical
+  type: string; // Loại content (article, website, etc.)
+  siteName: string; // Tên website
+  locale: string; // Ngôn ngữ (vi_VN, en_US)
+  author?: string; // Tác giả (optional)
+  publishedTime?: string; // Thời gian xuất bản (optional)
+  modifiedTime?: string; // Thời gian cập nhật (optional)
+  tags?: string[]; // Tags/keywords (optional)
 }
 ```
 
 **Đối tượng sử dụng**:
 
-- SEO services
-- Meta tag management
+- SEO service
+- Meta tags management
 - Social media sharing
-- Open Graph implementation
+- Open Graph protocol
 
 **Ví dụ sử dụng**:
 
 ```typescript
 import { SeoSocialShareData } from "@cci-web/core";
-import { Meta, Title } from "@angular/platform-browser";
 
-// SEO Service
-@Injectable()
-export class SeoService {
-  constructor(private meta: Meta, private title: Title) {}
-
-  updateSeoData(data: SeoSocialShareData) {
-    // Cập nhật title
-    if (data.title) {
-      this.title.setTitle(data.title);
-    }
-
-    // Cập nhật meta tags
-    const metaTags = [
-      { name: "description", content: data.description || "" },
-      { name: "keywords", content: data.keywords || "" },
-      { name: "author", content: data.author || "" },
-
-      // Open Graph tags
-      { property: "og:title", content: data.title || "" },
-      { property: "og:description", content: data.description || "" },
-      { property: "og:image", content: data.image || "" },
-      { property: "og:url", content: data.url || "" },
-      { property: "og:type", content: data.type || "website" },
-
-      // Twitter Card tags
-      { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: data.title || "" },
-      { name: "twitter:description", content: data.description || "" },
-      { name: "twitter:image", content: data.image || "" },
-    ];
-
-    metaTags.forEach((tag) => {
-      if (tag.name) {
-        this.meta.updateTag(tag);
-      } else if (tag.property) {
-        this.meta.updateTag({ property: tag.property, content: tag.content });
-      }
-    });
-  }
-}
+// Dữ liệu SEO cho trang sản phẩm
+const productSeoData: SeoSocialShareData = {
+  title: "iPhone 15 Pro Max - Điện thoại cao cấp",
+  description: "iPhone 15 Pro Max với chip A17 Pro, camera 48MP, màn hình Super Retina XDR 6.7 inch",
+  image: "https://example.com/iphone-15-pro-max.jpg",
+  url: "https://example.com/products/iphone-15-pro-max",
+  type: "product",
+  siteName: "CCI Store",
+  locale: "vi_VN",
+  tags: ["iPhone", "Apple", "Smartphone", "Cao cấp"]
+};
 
 // Component sử dụng
 @Component({
@@ -357,316 +297,188 @@ export class SeoService {
   template: `<div>Product Detail Page</div>`,
 })
 export class ProductDetailComponent implements OnInit {
-  constructor(private seoService: SeoService, private route: ActivatedRoute) {}
+  constructor(private seoService: SeoService) {}
 
   ngOnInit() {
-    // Giả sử lấy thông tin sản phẩm từ API
-    const productSeoData: SeoSocialShareData = {
-      title: "iPhone 15 Pro Max - CCI Store",
-      description: "iPhone 15 Pro Max với chip A17 Pro, camera 48MP, màn hình Super Retina XDR",
-      keywords: "iPhone 15, Apple, smartphone, CCI Store",
-      image: "https://example.com/iphone-15-pro-max.jpg",
-      url: "https://ccistore.com/products/iphone-15-pro-max",
-      type: "product",
-      author: "CCI Store",
-      section: "Electronics",
-      published: "2024-01-15T10:00:00Z",
-      modified: "2024-01-20T15:30:00Z",
-    };
-
     this.seoService.updateSeoData(productSeoData);
   }
 }
 ```
 
-## 🔗 Quan hệ giữa các Models
+## 🔧 Utility Functions
 
-### Mối quan hệ chính:
-
-1. **PagingConfig ↔ PagingResponse**:
-
-   - `PagingConfig` định nghĩa cấu hình phân trang
-   - `PagingResponse` chứa kết quả phân trang từ API
-
-2. **AppUserPrincipal ↔ SeoSocialShareData**:
-
-   - `AppUserPrincipal.customer_name` có thể được sử dụng làm `author` trong SEO data
-
-3. **BreadcrumbRes ↔ SeoSocialShareData**:
-   - Breadcrumb có thể được sử dụng để tạo structured data cho SEO
-
-### Sơ đồ quan hệ:
-
-```
-AppUserPrincipal ──┐
-                   ├─→ Application State
-BreadcrumbRes ─────┤
-                   └─→ SEO Metadata
-SeoSocialShareData ─┘
-
-PagingConfig ──────┐
-                   ├─→ Data Pagination
-PagingResponse ────┘
-```
-
-## ✅ Validation Rules
-
-### AppUserPrincipal
+### Model Validation
 
 ```typescript
-// Validation helper
-export class AppUserPrincipalValidator {
-  static validate(user: AppUserPrincipal): string[] {
-    const errors: string[] = [];
-
-    if (!user.customer_id || user.customer_id <= 0) {
-      errors.push("Customer ID phải là số dương");
-    }
-
-    if (!user.customer_uid || user.customer_uid.trim() === "") {
-      errors.push("Customer UID không được để trống");
-    }
-
-    if (!user.username || user.username.trim() === "") {
-      errors.push("Username không được để trống");
-    }
-
-    if (user.gender !== 0 && user.gender !== 1) {
-      errors.push("Gender phải là 0 (Nữ) hoặc 1 (Nam)");
-    }
-
-    return errors;
+// Validation helpers
+export class ModelValidator {
+  static validateAppUserPrincipal(user: AppUserPrincipal): boolean {
+    return !!(user.customer_id && user.customer_uid && user.username);
   }
-}
-```
 
-### PagingConfig
-
-```typescript
-export class PagingConfigValidator {
-  static validate(config: PagingConfig): string[] {
+  static validatePagingConfig(config: PagingConfig): string[] {
     const errors: string[] = [];
-
+    
     if (config.PageSize <= 0 || config.PageSize > 100) {
-      errors.push("PageSize phải từ 1 đến 100");
+      errors.push('PageSize must be between 1 and 100');
     }
-
+    
     if (config.CurrentPageIndex <= 0) {
-      errors.push("CurrentPageIndex phải lớn hơn 0");
+      errors.push('CurrentPageIndex must be greater than 0');
     }
-
+    
     if (config.TotalRecord < 0) {
-      errors.push("TotalRecord không được âm");
+      errors.push('TotalRecord cannot be negative');
     }
-
-    return errors;
-  }
-}
-```
-
-### SeoSocialShareData
-
-```typescript
-export class SeoDataValidator {
-  static validate(data: SeoSocialShareData): string[] {
-    const errors: string[] = [];
-
-    if (data.title && data.title.length > 60) {
-      errors.push("Title không nên vượt quá 60 ký tự");
-    }
-
-    if (data.description && data.description.length > 160) {
-      errors.push("Description không nên vượt quá 160 ký tự");
-    }
-
-    if (data.url && !this.isValidUrl(data.url)) {
-      errors.push("URL không hợp lệ");
-    }
-
+    
     return errors;
   }
 
-  private static isValidUrl(url: string): boolean {
-    try {
-      new URL(url);
-      return true;
-    } catch {
-      return false;
-    }
+  static validateSeoData(data: SeoSocialShareData): boolean {
+    return !!(data.title && data.description && data.url);
   }
 }
 ```
 
-## 🚨 Xử lý lỗi thường gặp
-
-### 1. Lỗi khởi tạo AppUserPrincipal
-
-**Lỗi**: `Cannot read property 'customer_id' of null`
-
-**Nguyên nhân**: Truyền null hoặc undefined vào constructor
-
-**Giải pháp**:
+### Model Transformers
 
 ```typescript
-// Thay vì:
-const user = new AppUserPrincipal(null); // ❌ Lỗi
-
-// Sử dụng:
-const user = userData ? new AppUserPrincipal(userData) : null; // ✅ Đúng
-
-// Hoặc tạo factory method:
-export class AppUserPrincipal {
-  static fromApiResponse(data: any): AppUserPrincipal | null {
-    if (!data) return null;
-    return new AppUserPrincipal(data);
+// Transform helpers
+export class ModelTransformer {
+  static toDisplayPage(config: PagingConfig): number {
+    return config.CurrentPageIndex;
   }
-}
-```
 
-### 2. Lỗi phân trang không đúng
+  static fromDisplayPage(displayPage: number): number {
+    return displayPage;
+  }
 
-**Lỗi**: Hiển thị sai số trang hoặc dữ liệu
+  static calculateOffset(config: PagingConfig): number {
+    return (config.CurrentPageIndex - 1) * config.PageSize;
+  }
 
-**Nguyên nhân**: Confusion giữa `CurrentPageIndex` và `PageIndex`
+  static createBreadcrumbFromRoute(route: string): BreadcrumbRes[] {
+    const segments = route.split('/').filter(s => s);
+    const breadcrumbs: BreadcrumbRes[] = [
+      { title: 'Trang chủ', link: '/', isActive: false }
+    ];
 
-**Giải pháp**:
-
-```typescript
-// Luôn sử dụng CurrentPageIndex cho UI
-const displayPage = response.CurrentPageIndex;
-const totalPages = Math.ceil(response.TotalRecord / response.PageSize);
-
-// Validation trước khi sử dụng
-if (displayPage < 1 || displayPage > totalPages) {
-  console.warn("Invalid page index:", displayPage);
-}
-```
-
-### 3. Lỗi SEO metadata không hiển thị
-
-**Lỗi**: Meta tags không được cập nhật
-
-**Nguyên nhân**: Gọi SEO service trước khi component được khởi tạo
-
-**Giải pháp**:
-
-```typescript
-@Component({...})
-export class ProductComponent implements OnInit, OnDestroy {
-  ngOnInit() {
-    // Đợi dữ liệu load xong mới cập nhật SEO
-    this.productService.getProduct(this.productId)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(product => {
-        const seoData: SeoSocialShareData = {
-          title: product.name,
-          description: product.description
-        };
-        this.seoService.updateSeoData(seoData);
+    let currentPath = '';
+    segments.forEach((segment, index) => {
+      currentPath += `/${segment}`;
+      const isLast = index === segments.length - 1;
+      
+      breadcrumbs.push({
+        title: segment.charAt(0).toUpperCase() + segment.slice(1),
+        link: currentPath,
+        isActive: isLast
       });
+    });
+
+    return breadcrumbs;
   }
 }
 ```
 
-### 4. Lỗi Generic Type trong PagingResponse
+## 📚 Best Practices
 
-**Lỗi**: TypeScript không nhận diện đúng type của Records
-
-**Giải pháp**:
+### 1. Type Safety
 
 ```typescript
-// Luôn specify generic type
-this.http
+// ✅ Đúng - Sử dụng generic types
+this.apiService
   .get<PagingResponse<Product>>("/api/products") // ✅ Đúng
-  .subscribe((response) => {
-    // TypeScript biết response.Records là Product[]
-    response.Records.forEach((product) => {
+  .subscribe(response => {
+    // TypeScript sẽ biết response.Records là Product[]
+    response.Records.forEach(product => {
       console.log(product.name); // ✅ Type-safe
     });
   });
 
-// Thay vì:
-this.http.get("/api/products"); // ❌ Không type-safe
+// ❌ Sai - Không sử dụng types
+this.apiService
+  .get("/api/products") // ❌ Sai - Không có type
+  .subscribe((response: any) => {
+    // Không có type safety
+  });
 ```
 
-## 🎯 Best Practices
-
-### 1. Sử dụng Type Guards
+### 2. Model Updates
 
 ```typescript
-export function isValidAppUser(user: any): user is AppUserPrincipal {
-  return (
-    user &&
-    typeof user.customer_id === "number" &&
-    typeof user.customer_uid === "string" &&
-    typeof user.username === "string"
-  );
+// ✅ Đúng - Immutable updates
+static updatePagingConfig(current: PagingConfig, updates: Partial<PagingConfig>): PagingConfig {
+  return {
+    ...current,
+    ...updates
+  };
 }
 
-// Sử dụng:
-if (isValidAppUser(userData)) {
-  const user = new AppUserPrincipal(userData);
-}
-```
-
-### 2. Immutable Updates
-
-```typescript
-// Tạo helper cho immutable updates
-export class ModelHelpers {
-  static updatePagingConfig(current: PagingConfig, updates: Partial<PagingConfig>): PagingConfig {
-    return { ...current, ...updates };
-  }
+// ❌ Sai - Mutating original object
+static updatePagingConfigBad(config: PagingConfig, updates: Partial<PagingConfig>) {
+  Object.assign(config, updates); // ❌ Mutates original
+  return config;
 }
 ```
 
-### 3. Default Values
+### 3. Caching Strategies
 
 ```typescript
-// Tạo factory functions với default values
-export const createDefaultPagingConfig = (): PagingConfig => ({
-  TotalRecord: 0,
-  CurrentPageIndex: 1,
-  PageIndex: 1,
-  PageSize: 20,
-});
-
-export const createDefaultSeoData = (): SeoSocialShareData => ({
-  title: "CCI Store - Mua sắm trực tuyến",
-  description: "Cửa hàng trực tuyến uy tín với hàng ngàn sản phẩm chất lượng",
-  type: "website",
-});
-```
-
-## 📊 Performance Considerations
-
-### 1. Memory Management
-
-- Sử dụng `OnDestroy` để cleanup subscriptions khi làm việc với models
-- Avoid creating unnecessary instances của `AppUserPrincipal`
-
-### 2. Caching Strategy
-
-```typescript
-@Injectable()
-export class ModelCacheService {
+// Service với caching
+export class UserService {
   private userCache = new Map<string, AppUserPrincipal>();
 
-  getCachedUser(uid: string): AppUserPrincipal | null {
-    return this.userCache.get(uid) || null;
+  getUser(userId: string): Observable<AppUserPrincipal> {
+    const cached = this.userCache.get(userId);
+    if (cached) {
+      return of(cached);
+    }
+
+    return this.apiService.getById<AppUserPrincipal>('/api/users', userId)
+      .pipe(
+        tap(user => this.userCache.set(userId, user))
+      );
   }
 
-  setCachedUser(user: AppUserPrincipal): void {
-    this.userCache.set(user.customer_uid, user);
+  clearUserCache(userId?: string) {
+    if (userId) {
+      this.userCache.delete(userId);
+    } else {
+      this.userCache.clear();
+    }
   }
 }
 ```
 
-### 3. Lazy Loading
+## 🧪 Testing
 
-- Chỉ load SEO data khi cần thiết
-- Sử dụng pagination để tránh load quá nhiều dữ liệu
+### Model Testing
 
----
+```typescript
+describe('ModelValidator', () => {
+  it('should validate AppUserPrincipal correctly', () => {
+    const validUser: AppUserPrincipal = {
+      customer_id: 1,
+      customer_uid: 'test-uid',
+      username: 'testuser',
+      customer_name: 'Test User',
+      avatar_url: 'https://example.com/avatar.jpg',
+      gender: 1
+    };
 
-_Tài liệu này được tạo cho @cci-web/core package. Để biết thêm thông tin, vui lòng tham khảo documentation chính của thư viện._
+    expect(ModelValidator.validateAppUserPrincipal(validUser)).toBe(true);
+  });
+
+  it('should invalidate incomplete user data', () => {
+    const invalidUser = {
+      customer_id: 0, // Invalid
+      customer_uid: '',
+      username: ''
+    } as AppUserPrincipal;
+
+    expect(ModelValidator.validateAppUserPrincipal(invalidUser)).toBe(false);
+  });
+});
+```
+
+Các models này cung cấp foundation vững chắc cho việc quản lý dữ liệu trong ứng dụng CCI-Web, đảm bảo type safety và consistency across toàn bộ hệ thống.

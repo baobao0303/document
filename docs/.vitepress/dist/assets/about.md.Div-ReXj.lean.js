@@ -1,1 +1,0 @@
-import{_ as i,c as a,o as t,ag as n}from"./chunks/framework.S-Qvb3wi.js";const h="/logo.svg",E=JSON.parse('{"title":"About","description":"","frontmatter":{},"headers":[],"relativePath":"about.md","filePath":"about.md"}'),p={name:"about.md"};function e(l,s,k,r,o,d){return t(),a("div",null,s[0]||(s[0]=[n("",8)]))}const c=i(p,[["render",e]]);export{E as __pageData,c as default};

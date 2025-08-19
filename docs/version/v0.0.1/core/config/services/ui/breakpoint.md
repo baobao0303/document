@@ -12,7 +12,7 @@ Breakpoint Service cung cấp hệ thống quản lý responsive breakpoints cho
 - **Type Safety**: Interface rõ ràng cho tất cả breakpoint states
 - **CDK Integration**: Sử dụng Angular CDK BreakpointObserver
 
-## Interface và Types
+## Giao diện và Kiểu
 
 ### Breakpoints Interface
 
@@ -44,22 +44,22 @@ export const BREAKPOINTS_VALUE = {
 };
 ```
 
-## API Reference
+## Tham chiếu API
 
-### Properties
+### Thuộc tính
 
-| Property | Type | Mô tả |
+| Thuộc tính | Kiểu | Mô tả |
 |----------|------|-------|
 | `breakpointsResult$` | `Observable<Breakpoints>` | Observable stream của breakpoint states |
 
-### Methods
+### Phương thức
 
-| Method | Signature | Mô tả |
+| Phương thức | Chữ ký | Mô tả |
 |--------|-----------|-------|
 | `setBreakpoints()` | `setBreakpoints(breakpoints: Breakpoints): void` | Cập nhật breakpoint states (internal use) |
 | `getBreakpoints()` | `getBreakpoints(): Breakpoints` | Lấy breakpoint states hiện tại |
 
-## Implementation Details
+## Chi tiết triển khai
 
 ### Service Implementation
 
@@ -325,7 +325,7 @@ export class ResponsiveService {
 | `isDesktopUp` | 1200px+ | Desktop | Full desktop layout, hover interactions |
 | `isBigDesktopUp` | 1440px+ | Large desktop | Wide layouts, maximum content density |
 
-## Best Practices
+## Thực hành tốt nhất
 
 ### 1. Unsubscribe Pattern
 
@@ -402,14 +402,14 @@ export class CachedBreakpointComponent implements OnInit {
 }
 ```
 
-## Performance Considerations
+## Cân nhắc về hiệu suất
 
 - **Efficient Observables**: Service sử dụng `distinctUntilChanged()` để tránh emit duplicate values
 - **Single Instance**: Service được provide ở root level, đảm bảo singleton pattern
 - **Memory Management**: Luôn unsubscribe để tránh memory leaks
 - **CDK Integration**: Tận dụng Angular CDK's optimized breakpoint detection
 
-## Troubleshooting
+## Khắc phục sự cố
 
 ### Common Issues
 
@@ -425,7 +425,7 @@ export class CachedBreakpointComponent implements OnInit {
    - Sử dụng getBreakpoints() để lấy state hiện tại
    - Đợi first emission từ observable
 
-## Dependencies
+## Phụ thuộc
 
 - `@angular/cdk/layout` - BreakpointObserver
 - `rxjs` - BehaviorSubject, distinctUntilChanged

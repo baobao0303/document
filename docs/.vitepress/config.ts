@@ -39,7 +39,7 @@ export default {
       {
         text: "Library",
         collapsible: true,
-        collapsed: true,
+        collapsed: false,
         items: [
           {
             text: "@cci-web/core",
@@ -72,12 +72,21 @@ export default {
                         collapsed: true,
                         items: [
                           { text: "Breakpoint Service", link: "/version/v0.0.1/core/config/services/ui/breakpoint" },
-                          { text: "Loading Spinner Service", link: "/version/v0.0.1/core/config/services/ui/loading-spinner" },
-                          { text: "Notification Service", link: "/version/v0.0.1/core/config/services/ui/notification" },
+                          {
+                            text: "Loading Spinner Service",
+                            link: "/version/v0.0.1/core/config/services/ui/loading-spinner",
+                          },
+                          {
+                            text: "Notification Service",
+                            link: "/version/v0.0.1/core/config/services/ui/notification",
+                          },
                           { text: "Open Menu Service", link: "/version/v0.0.1/core/config/services/ui/open-menu" },
                           { text: "Overlay Service", link: "/version/v0.0.1/core/config/services/ui/overlay" },
                           { text: "Responsive Service", link: "/version/v0.0.1/core/config/services/ui/responsive" },
-                          { text: "Search Event Bridge Service", link: "/version/v0.0.1/core/config/services/ui/search-event-bridge" },
+                          {
+                            text: "Search Event Bridge Service",
+                            link: "/version/v0.0.1/core/config/services/ui/search-event-bridge",
+                          },
                         ],
                       },
                       {
@@ -88,12 +97,21 @@ export default {
                           { text: "API Service", link: "/version/v0.0.1/core/config/services/common/api" },
                           { text: "Auth Service", link: "/version/v0.0.1/core/config/services/common/auth" },
                           { text: "Base API Service", link: "/version/v0.0.1/core/config/services/common/base-api" },
-                          { text: "Browser Refresh Service", link: "/version/v0.0.1/core/config/services/common/browser-refresh" },
-                          { text: "Config Merge Service", link: "/version/v0.0.1/core/config/services/common/config-merge" },
+                          {
+                            text: "Browser Refresh Service",
+                            link: "/version/v0.0.1/core/config/services/common/browser-refresh",
+                          },
+                          {
+                            text: "Config Merge Service",
+                            link: "/version/v0.0.1/core/config/services/common/config-merge",
+                          },
                           { text: "Cookie Service", link: "/version/v0.0.1/core/config/services/common/cookie" },
                           { text: "Document Service", link: "/version/v0.0.1/core/config/services/common/document" },
                           { text: "Platform Service", link: "/version/v0.0.1/core/config/services/common/platform" },
-                          { text: "Request Cache Service", link: "/version/v0.0.1/core/config/services/common/request-cache" },
+                          {
+                            text: "Request Cache Service",
+                            link: "/version/v0.0.1/core/config/services/common/request-cache",
+                          },
                           { text: "SEO Service", link: "/version/v0.0.1/core/config/services/common/seo" },
                           { text: "Window Service", link: "/version/v0.0.1/core/config/services/common/window" },
                         ],
@@ -103,9 +121,15 @@ export default {
                         collapsible: true,
                         collapsed: true,
                         items: [
-                          { text: "App Initialize Service", link: "/version/v0.0.1/core/config/services/remote/app-initialize" },
+                          {
+                            text: "App Initialize Service",
+                            link: "/version/v0.0.1/core/config/services/remote/app-initialize",
+                          },
                           { text: "Loader Service", link: "/version/v0.0.1/core/config/services/remote/loader" },
-                          { text: "Remote CSS Service", link: "/version/v0.0.1/core/config/services/remote/remote-css" },
+                          {
+                            text: "Remote CSS Service",
+                            link: "/version/v0.0.1/core/config/services/remote/remote-css",
+                          },
                         ],
                       },
                     ],

@@ -6,6 +6,41 @@ Module này cung cấp các Angular components tái sử dụng cho ứng dụng
 
 Module Components bao gồm các thành phần UI được thiết kế để sử dụng chung trong toàn bộ hệ sinh thái CCI Web. Tất cả components đều được tối ưu hóa cho hiệu suất và khả năng tái sử dụng.
 
+### Tóm tắt nhanh
+
+| STT | Tên                                     | Mô tả ngắn                                  |
+| --- | --------------------------------------- | ------------------------------------------- |
+| 1   | `LoadingSpinnerComponent`               | Hiển thị trạng thái loading toàn cục/cục bộ |
+| 2   | `OverlayComponent`                      | Lớp phủ (overlay) chặn tương tác nền        |
+| 3   | `SpinnerInitAppComponent`               | Spinner cho giai đoạn khởi tạo app          |
+| 4   | `SafePageComponent`                     | Khung trang an toàn (bao lỗi/empty)         |
+| 5   | `BaseImageComponent`                    | Ảnh cơ bản có xử lý tiện ích                |
+| 6   | `BaseSectionComponent`                  | Khối section có tiêu đề/khe chứa nội dung   |
+| 7   | `BaseBlockSkeletonComponent`            | Khối skeleton placeholder                   |
+| 8   | `ProductSkeletonComponent`              | Skeleton cho danh sách sản phẩm             |
+| 9   | `BaseOwlCarouselComponent`              | Carousel hiển thị item                      |
+| 10  | `BaseProductItemComponent`              | Item sản phẩm cơ bản                        |
+| 11  | `PaginationComponent`                   | Phân trang                                  |
+| 12  | `SearchNoProductComponent`              | Trạng thái không có kết quả                 |
+| 13  | `BasePromotionFocusSearchComponent`     | Ô tìm kiếm khuyến mãi                       |
+| 14  | `BaseRadioButtonIconComponent`          | Radio button dạng icon                      |
+| 15  | `RadioButtonCustomComponent`            | Radio tùy biến                              |
+| 16  | `ResponsiveContainerComponent`          | Container phản hồi kích thước               |
+| 17  | `ChipComponent`                         | Nhãn chip                                   |
+| 18  | `MobileScrollSmoothComponent`           | Scroll mượt mobile                          |
+| 19  | `SortItemComponent`                     | Mục sắp xếp                                 |
+| 20  | `PageNotFoundComponent`                 | Trang 404                                   |
+| 21  | `MfeTailwindcssIsolationComponent`      | Cô lập style khi MFE                        |
+| 22  | `WrapperComponent` (+ `wrapper-config`) | Bọc nội dung, cấu hình wrapper              |
+
+Ví dụ dùng nhanh:
+
+```html
+<app-loading-spinner></app-loading-spinner>
+<app-overlay></app-overlay>
+<app-pagination [total]="120" [page]="page" (pageChange)="page=$event"></app-pagination>
+```
+
 ## Danh sách Components
 
 ### Base Components

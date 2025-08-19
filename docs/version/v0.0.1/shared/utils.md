@@ -6,6 +6,23 @@ Module này cung cấp các utility functions và helper functions để hỗ tr
 
 Module Utils bao gồm các hàm tiện ích được thiết kế để xử lý các tác vụ phổ biến như kiểm tra URL, chuyển đổi dữ liệu, xử lý mảng, và quản lý navigation.
 
+### Tóm tắt nhanh
+
+| STT | Hàm                                       | Mô tả ngắn                                  |
+| --- | ----------------------------------------- | ------------------------------------------- |
+| 1   | `checkUrl(full, match)`                   | Kiểm tra URL có chứa path                   |
+| 2   | `convertISOToDateObject(s)`               | Chuyển ISO string → đối tượng ngày chi tiết |
+| 3   | `convertArrayTwoItemInSlide(arr, k1, k2)` | Gom mảng theo cặp 2 phần tử/slide           |
+| 4   | `getUrlImageCDN(url, cdn)`                | Tạo URL ảnh đầy đủ từ CDN                   |
+| 5   | `navigateHistory()`                       | Quay lại trang trước                        |
+
+Ví dụ dùng nhanh:
+
+```typescript
+const cdnImg = getUrlImageCDN("/images/p.jpg", "https://cdn.example.com");
+// => https://cdn.example.com/images/p.jpg
+```
+
 ## Danh sách Utility Functions
 
 ### checkUrl(url: string): boolean
@@ -350,10 +367,10 @@ export class NavigationComponent {
 
 #### Parameters
 
-| Parameter     | Type                  | Default     | Mô tả                             |
-| ------------- | --------------------- | ----------- | --------------------------------- |
-| `direction`   | `'back' \| 'forward'` | -           | Hướng navigation                  |
-| `fallbackUrl` | `string`              | `undefined` | URL fallback nếu không có history |
+| Parameter     | Type     | Default     | Mô tả                             |
+| ------------- | -------- | ----------- | --------------------------------- | ---------------- |
+| `direction`   | `'back'  | 'forward'`  | -                                 | Hướng navigation |
+| `fallbackUrl` | `string` | `undefined` | URL fallback nếu không có history |
 
 #### Returns
 

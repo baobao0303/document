@@ -8,7 +8,8 @@ npm install @cci-web/shared
 
 ## Requirements
 
-- Node.js >= 16.0.0
+- Node.js >= 18.x
+- NPM >= 9.x or Yarn >= 1.22.x
 - Angular >= 19.2.0
 - TypeScript >= 5.0.0
 

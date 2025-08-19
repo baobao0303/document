@@ -1,29 +1,30 @@
-# CLI Installation
+# Cài đặt bằng CLI
 
-React Bits uses a jsrepo registry to host components, making it very easy for you to bring them into your projects. Here, you have two options:
+Trang này minh hoạ việc dùng một CLI registry để cài component vào dự án của bạn. Bạn có hai lựa chọn:
 
-## 1. One-time Installation
+## 1. Cài đặt một lần
 
-You can install components fast using a one-time install command. You'll get prompted to select an installation path and to install dependencies.
+Bạn có thể cài nhanh bằng một lệnh duy nhất. CLI sẽ hỏi đường dẫn cài đặt và có cài phụ thuộc hay không.
 
 ```bash
 npx @react-bits/cli add button
 ```
 
-### Interactive prompts:
-- **Installation path**: Choose where to install the component
-- **Dependencies**: Automatically install required packages
-- **TypeScript**: Option to generate TypeScript definitions
+### Các bước hỏi tương tác:
 
-## 2. Global Installation
+- **Installation path**: Chọn nơi sẽ cài component
+- **Dependencies**: Tự động cài các gói cần thiết
+- **TypeScript**: Tuỳ chọn sinh định nghĩa TypeScript
 
-Install the CLI globally for easier access:
+## 2. Cài đặt CLI toàn cục
+
+Cài CLI toàn cục để sử dụng thuận tiện hơn:
 
 ```bash
 npm install -g @react-bits/cli
 ```
 
-Then use it to add components:
+Sau đó dùng để thêm component:
 
 ```bash
 react-bits add button
@@ -31,9 +32,9 @@ react-bits add card
 react-bits add modal
 ```
 
-## 3. Initialize Project
+## 3. Khởi tạo dự án
 
-For new projects, you can initialize with a complete setup:
+Với dự án mới, bạn có thể khởi tạo kèm thiết lập cơ bản:
 
 ```bash
 npx @react-bits/cli init my-project
@@ -41,21 +42,22 @@ cd my-project
 npm install
 ```
 
-This will create:
-- Project structure
-- Configuration files
-- Basic components
-- Development dependencies
+Lệnh trên sẽ tạo:
 
-## 4. Browse Available Components
+- Cấu trúc dự án
+- File cấu hình
+- Các component cơ bản
+- Dev dependencies
 
-List all available components:
+## 4. Duyệt danh sách component
+
+Liệt kê tất cả component khả dụng:
 
 ```bash
 react-bits list
 ```
 
-Search for specific components:
+Tìm theo từ khoá hoặc chuyên mục:
 
 ```bash
 react-bits search button
@@ -63,18 +65,18 @@ react-bits search --category navigation
 react-bits search --tag responsive
 ```
 
-## 5. Update Components
+## 5. Cập nhật component
 
-Keep your components up to date:
+Giữ các component luôn mới nhất:
 
 ```bash
 react-bits update button
 react-bits update --all
 ```
 
-## 6. Configuration
+## 6. Cấu hình CLI
 
-Customize CLI behavior with a config file:
+Tuỳ biến hành vi CLI qua file cấu hình:
 
 ```json
 {
@@ -85,17 +87,17 @@ Customize CLI behavior with a config file:
 }
 ```
 
-## CLI Commands Reference
+## Tham khảo lệnh CLI
 
-| Command | Description | Example |
-|---------|-------------|---------|
-| `add` | Install a component | `react-bits add button` |
-| `list` | Show all components | `react-bits list` |
-| `search` | Find components | `react-bits search modal` |
-| `update` | Update components | `react-bits update --all` |
-| `init` | Initialize project | `react-bits init my-app` |
-| `config` | Manage settings | `react-bits config --show` |
+| Lệnh     | Mô tả                     | Ví dụ                      |
+| -------- | ------------------------- | -------------------------- |
+| `add`    | Cài một component         | `react-bits add button`    |
+| `list`   | Hiển thị tất cả component | `react-bits list`          |
+| `search` | Tìm component             | `react-bits search modal`  |
+| `update` | Cập nhật component        | `react-bits update --all`  |
+| `init`   | Khởi tạo dự án            | `react-bits init my-app`   |
+| `config` | Quản lý thiết lập         | `react-bits config --show` |
 
-## That's all!
+## Hoàn tất!
 
-The CLI makes it super easy to manage React Bits components in your projects. No more copy-pasting - just install and use!
+CLI giúp bạn quản lý component rất dễ dàng trong dự án. Không còn copy-paste – chỉ cần cài và dùng!

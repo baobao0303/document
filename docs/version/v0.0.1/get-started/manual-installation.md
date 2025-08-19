@@ -1,57 +1,53 @@
-# Manual Installation
+# Cài đặt thủ công
 
-Follow these steps to manually install components:
+Làm theo các bước sau để cài đặt component thủ công:
 
-## 1. Pick a component
+## 1. Chọn component
 
-Preview components and find something you like, then head to the Code tab.
+Xem trước các component và chọn cái bạn muốn, sau đó chuyển sang tab Code để lấy mã nguồn.
 
-## 2. Install dependencies
+## 2. Cài đặt phụ thuộc
 
-Components may use external libraries, don't forget to install them. For example, the SplitText component requires GSAP for smooth animations.
+Một số component sử dụng thư viện bên ngoài, đừng quên cài đặt chúng. Ví dụ, component SplitText cần GSAP để chạy animation mượt mà.
 
 ```bash
 npm install gsap
 ```
 
-## 3. Copy the code
+## 3. Sao chép mã
 
-The Code tab also contains all the code you need to copy - you can use the controls below to switch between technologies on the Code tab.
+Tab Code chứa toàn bộ mã bạn cần sao chép – bạn có thể dùng các nút trên tab để chuyển giữa các công nghệ khi cần.
 
-## 4. Use the component
+## 4. Sử dụng component
 
-A basic usage example is provided for every component, and if you want to go into details, you can check all the available props on the Preview tab.
+Mỗi component đều có ví dụ sử dụng cơ bản; nếu muốn đi sâu hơn, bạn có thể xem toàn bộ props trên tab Preview.
 
 ```javascript
 import SplitText from "./SplitText";
 
-<SplitText
-  text="Hello, you!"
-  delay={100}
-  duration={0.6}
-/>
+<SplitText text="Hello, you!" delay={100} duration={0.6} />;
 ```
 
-## 5. Customize styling
+## 5. Tuỳ chỉnh kiểu dáng (CSS)
 
-Modify the component's CSS to match your design system:
+Chỉnh sửa CSS của component để phù hợp với hệ thống thiết kế của bạn:
 
 ```css
 .split-text {
-  font-family: 'Your Font', sans-serif;
+  font-family: "Your Font", sans-serif;
   color: #your-color;
   font-size: 2rem;
 }
 ```
 
-## 6. Test your implementation
+## 6. Kiểm thử tích hợp
 
-Make sure to test the component in different scenarios:
+Hãy kiểm thử component trong nhiều bối cảnh khác nhau:
 
-- Different screen sizes
-- Various text lengths
-- Edge cases and error states
+- Nhiều kích thước màn hình
+- Độ dài nội dung khác nhau
+- Trường hợp biên và trạng thái lỗi
 
-## That's all!
+## Hoàn tất!
 
-From here on, it's all about how you integrate the component into your project. The code is yours to play around with - modify styling, functionalities, anything goes!
+Từ đây, tất cả phụ thuộc vào cách bạn tích hợp component vào dự án. Bạn có toàn quyền thay đổi mã – chỉnh style, tính năng… tuỳ ý!

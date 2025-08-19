@@ -178,6 +178,32 @@ body:not(:has(.VPContent.is-home)) .VPNavBarMenu {
   transition: all 0.25s !important;
 }
 
+/* Full-width Markdown tables */
+.vp-doc table,
+.VPDoc table,
+.VPContent .content .vp-doc table {
+  width: 100% !important;
+  margin: 1rem 0 !important;
+}
+
+/* Ensure table uses full width even with VitePress defaults */
+.vp-doc table {
+  display: table !important;
+  width: 100% !important;
+  max-width: 100%;
+  table-layout: fixed;
+  margin: 1rem 0 !important;
+}
+
+/* If VitePress wraps tables in a container, make wrapper full width */
+.vp-doc .table,
+.vp-doc .vp-table,
+.vp-doc .table-container {
+  display: block;
+  width: 100%;
+  overflow-x: auto;
+}
+
 .footer-nav-link:nth-child(1) {
   right: 200px;
 }
@@ -202,7 +228,7 @@ body:not(:has(.VPContent.is-home)) .VPNavBarMenu {
     display: inline-block;
     margin: 4px;
   }
-  
+
   .footer-nav-link:nth-child(1),
   .footer-nav-link:nth-child(2),
   .footer-nav-link:nth-child(3) {

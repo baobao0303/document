@@ -8,8 +8,10 @@ npm install @cci-web/server
 
 ## Requirements
 
-- Node.js >= 16.0.0
+- Node.js >= 18.x
+- NPM >= 9.x or Yarn >= 1.22.x
 - Angular >= 19.2.0
+- TypeScript >= 5.0.0
 - Express >= 4.18.0
 
 ## Sử dụng cơ bản

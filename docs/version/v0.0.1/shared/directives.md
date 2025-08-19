@@ -6,6 +6,20 @@ Module này cung cấp các Angular directives để mở rộng chức năng HT
 
 Module Directives bao gồm các directive được thiết kế để thêm các hành vi và chức năng đặc biệt cho các phần tử HTML, giúp tăng cường trải nghiệm người dùng và tương tác với ứng dụng.
 
+## Tóm tắt nhanh
+
+| STT | Tên                    | Mô tả ngắn                                 |
+| --- | ---------------------- | ------------------------------------------ |
+| 1   | `AutoWrapperDirective` | Tự động bọc nội dung theo cấu hình wrapper |
+| 2   | `OpenSearchDirective`  | Mở khung/tính năng tìm kiếm khi tương tác  |
+
+Ví dụ dùng nhanh:
+
+```html
+<button cciOpenSearch>Search</button>
+<div cciAutoWrapper>Nội dung sẽ được bọc theo cấu hình wrapper</div>
+```
+
 ## Danh sách Directives
 
 ### OpenSearchDirective
@@ -58,15 +72,15 @@ export class SearchComponent {
 
 #### Properties
 
-| Property              | Type                            | Default         | Mô tả                           |
-| --------------------- | ------------------------------- | --------------- | ------------------------------- |
-| `searchConfig`        | `SearchConfig`                  | `{}`            | Cấu hình cho search component   |
-| `triggerEvent`        | `'click' \| 'hover' \| 'focus'` | `'click'`       | Sự kiện kích hoạt search        |
-| `placeholder`         | `string`                        | `'Tìm kiếm...'` | Placeholder cho input search    |
-| `autoFocus`           | `boolean`                       | `true`          | Tự động focus vào input khi mở  |
-| `showOverlay`         | `boolean`                       | `true`          | Hiển thị overlay backdrop       |
-| `closeOnEscape`       | `boolean`                       | `true`          | Đóng search khi nhấn Escape     |
-| `closeOnClickOutside` | `boolean`                       | `true`          | Đóng search khi click bên ngoài |
+| Property              | Type           | Default         | Mô tả                           |
+| --------------------- | -------------- | --------------- | ------------------------------- | --------- | ------------------------ |
+| `searchConfig`        | `SearchConfig` | `{}`            | Cấu hình cho search component   |
+| `triggerEvent`        | `'click'       | 'hover'         | 'focus'`                        | `'click'` | Sự kiện kích hoạt search |
+| `placeholder`         | `string`       | `'Tìm kiếm...'` | Placeholder cho input search    |
+| `autoFocus`           | `boolean`      | `true`          | Tự động focus vào input khi mở  |
+| `showOverlay`         | `boolean`      | `true`          | Hiển thị overlay backdrop       |
+| `closeOnEscape`       | `boolean`      | `true`          | Đóng search khi nhấn Escape     |
+| `closeOnClickOutside` | `boolean`      | `true`          | Đóng search khi click bên ngoài |
 
 #### Events
 

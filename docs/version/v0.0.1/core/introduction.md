@@ -5,17 +5,21 @@ Nó cung cấp các thành phần và dịch vụ cơ bản giúp cho việc ph�
 
 ## Mục đích
 
-- **Tái sử dụng**: Gom nhóm các logic, constants, utilities, và services thường dùng để không phải viết lại ở từng MFE.
-- **Chuẩn hóa**: Đảm bảo cấu trúc code, naming convention và hành vi nhất quán giữa các module.
-- **Tiện lợi**: Giảm thời gian khởi tạo dự án mới vì đã có sẵn các cấu hình, providers và helper.
-- **Tích hợp dễ dàng**: Các MFE chỉ cần cài đặt và import để có ngay các chức năng chung.
+| Mục tiêu    | Mô tả                                                                |
+| ----------- | -------------------------------------------------------------------- |
+| Tái sử dụng | Gom nhóm logic, constants, utilities, services dùng chung            |
+| Chuẩn hóa   | Đồng nhất cấu trúc code, naming convention, hành vi giữa các module  |
+| Tiện lợi    | Rút ngắn thời gian khởi tạo dự án mới với cấu hình và helpers sẵn có |
+| Tích hợp dễ | MFE chỉ cần cài đặt và import để dùng chung các chức năng            |
 
 ## Thư viện này bao gồm
 
-- **Cấu hình ứng dụng** (application config & runtime config access)
-- **HTTP utilities** (interceptors, API service, request cache)
-- **Responsive & Breakpoints**
-- **Storage services** (LocalStorage, SessionStorage, Cookies)
-- **Các service tiện ích** (SEO, Overlay Loader, Platform detection, Event bridges)
-- **Providers tiện ích** (base app providers, platform config, enums from config)
-- **Utilities** (federation utilities, helper functions)
+| Nhóm               | Nội dung chính                                         |
+| ------------------ | ------------------------------------------------------ |
+| Cấu hình ứng dụng  | Application config & runtime config access             |
+| HTTP utilities     | Interceptors, API service, request cache               |
+| Responsive         | Breakpoints & responsive helpers                       |
+| Storage services   | LocalStorage, SessionStorage, Cookies                  |
+| Services tiện ích  | SEO, Overlay Loader, Platform detection, Event bridges |
+| Providers tiện ích | Base app providers, platform config, enums from config |
+| Utilities          | Federation utilities, helper functions                 |

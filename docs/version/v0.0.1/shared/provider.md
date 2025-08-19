@@ -11,6 +11,27 @@ Module này chứa các provider và injection token cho:
 - Loading spinner
 - Overlay components
 
+## Tóm tắt nhanh
+
+| STT | Tên                             | Loại       | Mô tả ngắn                                            |
+| --- | ------------------------------- | ---------- | ----------------------------------------------------- |
+| 1   | `SHARED_ENVIRONMENT`            | Token      | Cấu hình môi trường cho shared (cdnUrl, apiUrl, …)    |
+| 2   | `provideSharedEnvironment(env)` | ProviderFn | Đăng ký giá trị `SHARED_ENVIRONMENT`                  |
+| 3   | `BREAKPOINT_PORT`               | Token      | Cung cấp `breakpointsResult$: Observable<{L,XL,XXL}>` |
+| 4   | `LOADING_SPINNER_PORT`          | Token      | Cung cấp `loading$: Observable<boolean>`              |
+
+Ví dụ cấu hình environment:
+
+```typescript
+providers: [
+  provideSharedEnvironment({
+    production: false,
+    cdnUrl: "https://cdn.example.com",
+    apiUrl: "https://api.example.com",
+  }),
+];
+```
+
 ## Cấu trúc thư mục
 
 ```

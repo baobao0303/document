@@ -6,6 +6,29 @@ Module này cung cấp các Angular pipes để xử lý và định dạng dữ
 
 Module Pipes bao gồm các pipe được thiết kế để xử lý các tác vụ định dạng dữ liệu phổ biến như tiền tệ, ngày tháng, số liệu và các phép tính toán khác.
 
+## Tóm tắt nhanh
+
+| STT | Tên Pipe                        | Mô tả ngắn                         |
+| --- | ------------------------------- | ---------------------------------- |
+| 1   | `DiscountPipe`                  | Tính/hiển thị giảm giá             |
+| 2   | `EnumeratePipe`                 | Đánh số phần tử                    |
+| 3   | `FormatDataPipe`                | Chuẩn hóa/format dữ liệu chung     |
+| 4   | `FormatDatePipe`                | Định dạng ngày                     |
+| 5   | `FormatDeliveryTimePipe`        | Hiển thị thời gian giao hàng       |
+| 6   | `FormatMoneyPipe`               | Định dạng tiền tệ                  |
+| 7   | `FormatNumberHumanReadablePipe` | Số dễ đọc (1.2K, 3.4M)             |
+| 8   | `FormatTwoDecimalPipe`          | Làm tròn 2 chữ số                  |
+| 9   | `FormatViewPipe`                | Định dạng lượt xem                 |
+| 10  | `ObjIsEmptyPipe`                | Kiểm tra object rỗng               |
+| 11  | `PercentPipe`                   | Hiển thị phần trăm                 |
+| 12  | `SafePipe`                      | Đánh dấu nội dung an toàn (bypass) |
+
+Ví dụ dùng nhanh:
+
+```html
+<span>{{ 1250000 | formatMoney }}</span> <span>{{ 0.25 | percent }}</span>
+```
+
 ## Danh sách Pipes
 
 ### Formatting Pipes

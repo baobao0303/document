@@ -7,15 +7,15 @@ export default {
   ignoreDeadLinks: true,
 
   themeConfig: {
-    logo: "/logo.png",
-    siteTitle: "CCI Web",
+    logo: "https://cdn1.concung.com/themes/desktop4.1/image/logo-concung.png",
+    siteTitle: false,
     search: {
       provider: "local",
     },
     // Navbar Link
     nav: [
       { text: "Home", link: "/" },
-      { text: "Docs", link: "/docs" },
+      { text: "Docs", link: "/version/v0.0.1" },
       {
         // Dropdown Menu
         text: "Version",
@@ -31,11 +31,9 @@ export default {
         collapsible: true,
         collapsed: false,
         items: [
-          { text: "Overview", link: "/version/v0.0.1/overview" },
-          { text: "Installation", link: "/version/v0.0.1/installation" },
-          { text: "Usage Guide", link: "/version/v0.0.1/usage" },
-          { text: "Examples", link: "/version/v0.0.1/examples" },
-          { text: "Troubleshooting", link: "/version/v0.0.1/troubleshooting" },
+          { text: "Introduction", link: "/version/v0.0.1/get-started/introduction" },
+          { text: "Installation", link: "/version/v0.0.1/get-started/installation" },
+          { text: "Provider Setup", link: "/version/v0.0.1/get-started/provider-setup" },
         ],
       },
       {
@@ -49,7 +47,6 @@ export default {
             items: [
               { text: "Introduction", link: "/version/v0.0.1/core/introduction" },
               { text: "Installation & Requirements", link: "/version/v0.0.1/core/installation" },
-              { text: "Quick Start", link: "/version/v0.0.1/core/quick-start" },
               {
                 text: "Config Module",
                 collapsible: true,
@@ -60,14 +57,63 @@ export default {
                     link: "/version/v0.0.1/core/config/introduction",
                   },
                   { text: "Constants", link: "/version/v0.0.1/core/config/constants" },
-                  { text: "Interceptors", link: "/version/v0.0.1/core/config/interceptors" },
-                  { text: "Models", link: "/version/v0.0.1/core/config/models" },
+                  { text: "Interceptors", link: "/version/v0.0.1/core/config/interceptors/interceptors" },
+                  { text: "Models", link: "/version/v0.0.1/core/config/models/models" },
                   { text: "Providers", link: "/version/v0.0.1/core/config/providers" },
-                  { text: "Services", link: "/version/v0.0.1/core/config/services" },
+
+                  {
+                    text: "Services",
+                    collapsible: true,
+                    collapsed: true,
+                    items: [
+                      {
+                        text: "UI Services",
+                        collapsible: true,
+                        collapsed: true,
+                        items: [
+                          { text: "Breakpoint Service", link: "/version/v0.0.1/core/config/services/ui/breakpoint" },
+                          { text: "Loading Spinner Service", link: "/version/v0.0.1/core/config/services/ui/loading-spinner" },
+                          { text: "Notification Service", link: "/version/v0.0.1/core/config/services/ui/notification" },
+                          { text: "Open Menu Service", link: "/version/v0.0.1/core/config/services/ui/open-menu" },
+                          { text: "Overlay Service", link: "/version/v0.0.1/core/config/services/ui/overlay" },
+                          { text: "Responsive Service", link: "/version/v0.0.1/core/config/services/ui/responsive" },
+                          { text: "Search Event Bridge Service", link: "/version/v0.0.1/core/config/services/ui/search-event-bridge" },
+                        ],
+                      },
+                      {
+                        text: "Common Services",
+                        collapsible: true,
+                        collapsed: true,
+                        items: [
+                          { text: "API Service", link: "/version/v0.0.1/core/config/services/common/api" },
+                          { text: "Auth Service", link: "/version/v0.0.1/core/config/services/common/auth" },
+                          { text: "Base API Service", link: "/version/v0.0.1/core/config/services/common/base-api" },
+                          { text: "Browser Refresh Service", link: "/version/v0.0.1/core/config/services/common/browser-refresh" },
+                          { text: "Config Merge Service", link: "/version/v0.0.1/core/config/services/common/config-merge" },
+                          { text: "Cookie Service", link: "/version/v0.0.1/core/config/services/common/cookie" },
+                          { text: "Document Service", link: "/version/v0.0.1/core/config/services/common/document" },
+                          { text: "Platform Service", link: "/version/v0.0.1/core/config/services/common/platform" },
+                          { text: "Request Cache Service", link: "/version/v0.0.1/core/config/services/common/request-cache" },
+                          { text: "SEO Service", link: "/version/v0.0.1/core/config/services/common/seo" },
+                          { text: "Window Service", link: "/version/v0.0.1/core/config/services/common/window" },
+                        ],
+                      },
+                      {
+                        text: "Remote Services",
+                        collapsible: true,
+                        collapsed: true,
+                        items: [
+                          { text: "App Initialize Service", link: "/version/v0.0.1/core/config/services/remote/app-initialize" },
+                          { text: "Loader Service", link: "/version/v0.0.1/core/config/services/remote/loader" },
+                          { text: "Remote CSS Service", link: "/version/v0.0.1/core/config/services/remote/remote-css" },
+                        ],
+                      },
+                    ],
+                  },
+                  { text: "Storage", link: "/version/v0.0.1/core/config/storage" },
                   { text: "Utils", link: "/version/v0.0.1/core/config/utils" },
                 ],
               },
-
             ],
           },
           {
@@ -105,8 +151,8 @@ export default {
       text: "Edit this page on GitHub",
     },
     footer: {
-      message: "Được phát triển bởi team CCI",
-      copyright: "Copyright © 2025-present Adocs",
+      message: 'A library created with ❤️ by <a href="https://github.com/your-username" target="_blank">this guy</a>',
+      copyright: "© 2023 CCI Web",
     },
     markdown: {
       theme: "material-palenight",

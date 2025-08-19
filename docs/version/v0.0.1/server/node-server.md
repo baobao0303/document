@@ -1,103 +1,181 @@
-# NodeServer
+# Tài liệu NodeServer: Cấu hình Angular SSR Server
 
-Lớp chính để khởi tạo và cấu hình Express server cho server-side rendering (SSR).
+## Tổng quan
 
-## API Reference
+Lớp `NodeServer` cung cấp hạ tầng **dựa trên Express** để chạy ứng dụng Angular với **Server Side Rendering (SSR)**, đồng thời đóng vai trò như một **API reverse proxy**.
 
-### NodeServer Class
+Thiết lập này được thiết kế đặc biệt cho **môi trường production**, nơi mà:
 
-#### Constructor
+- Ứng dụng frontend cần được render phía server
+- Các request API backend cần được proxy thông qua lớp SSR
 
-```typescript
-constructor(ssrPort?: number, backendPort?: number)
+---
+
+## Mục đích chính
+
+Lớp này xử lý 3 chức năng quan trọng trong một cấu hình duy nhất:
+
+1. **Render phía server (SSR)** ứng dụng Angular bằng `CommonEngine`
+2. **Proxy API** cho backend dưới các route `/api`
+3. **Phục vụ static assets** với caching hợp lý
+
+---
+
+## Tham số cấu hình
+
+| Tham số           | Giá trị mặc định                                            |
+| ----------------- | ----------------------------------------------------------- |
+| `PORT`            | Từ constructor (`ssrPort`) hoặc biến môi trường `SSR_PORT`  |
+| `BACKEND_URL`     | `https://localhost:${backendPort}` (nếu không cấu hình env) |
+| `DIST_FOLDER`     | Đường dẫn build Angular                                     |
+| `BROWSER_FOLDER`  | Thư mục chứa static assets và `index.html`                  |
+| `INDEX_HTML_PATH` | Đường dẫn file `index.server.html`                          |
+
+---
+
+## Thành phần chính & Quy trình
+
+### 1. Nạp cấu hình (`loadConfiguration`)
+
+- Đọc biến môi trường (`BACKEND_URL`, `SSR_PORT`, ...)
+- Ưu tiên giá trị từ constructor so với biến môi trường
+- Log chi tiết cấu hình để debug
+- Thiết lập các đường dẫn chính:
+  - `distFolder`: Build Angular
+  - `browserFolder`: Static assets
+
+---
+
+### 2. Middleware (`setupMiddleware`)
+
+#### Proxy API
+
+```ts
+const apiProxy = createProxyMiddleware({
+  target: backendUrl,
+  changeOrigin: true,
+  secure: false,
+});
+this.app.use("/api", apiProxy);
 ```
 
-#### Methods
+- Mọi request `/api` sẽ được forward tới backend
+- `changeOrigin=true`: đảm bảo header host đúng
+- `secure=false`: bỏ qua SSL verification (chỉ dev)
 
-- `loadBootstrap(bootstrap: any): void` - Load Angular bootstrap function
-- `setupSSR(): void` - Cấu hình SSR routing
-- `setupErrorHandling(): void` - Cấu hình error handling
-- `start(): void` - Khởi động server
-- `getApp(): express.Application` - Lấy Express app instance
-- `getConfig(): ServerConfig` - Lấy cấu hình server
+#### Static Assets
 
-### Tokens
-
-#### SERVER_CONTEXT
-
-```typescript
-export const SERVER_CONTEXT: InjectionToken<string>;
+```ts
+this.app.use(
+  express.static(browserFolder, {
+    maxAge: "1y",
+    index: false,
+    setHeaders: (res, filePath) => {
+      if (filePath.endsWith(".html")) {
+        res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+      }
+    },
+  })
+);
 ```
 
-Injection token để inject server context vào Angular components.
+- Tài nguyên tĩnh cache **1 năm**
+- File HTML đặt **no-cache** để tránh nội dung cũ
 
-## Sử dụng
+---
 
-```typescript
-import { NodeServer } from "@cci-web/server/src/lib/node-server";
-import { bootstrap } from "./src/main.server";
+### 3. SSR Handler (`ssrHandler`)
 
-// Khởi tạo server
-const server = new NodeServer(4000, 3000);
+```ts
+async ssrHandler(req: Request, res: Response, next: NextFunction) {
+  const renderedHtml = await this.commonEngine.render({
+    bootstrap: this.bootstrap,
+    documentFilePath: indexHtmlPath,
+    url: `${protocol}://${headers.host}${originalUrl}`,
+    publicPath: browserFolder,
+    providers: [{ provide: APP_BASE_HREF, useValue: baseUrl || "/" }]
+  });
 
-// Load Angular bootstrap function
-server.loadBootstrap(bootstrap);
-
-// Cấu hình SSR
-server.setupSSR();
-
-// Cấu hình error handling
-server.setupErrorHandling();
-
-// Khởi động server
-server.start();
+  res.setHeader("Content-Type", "text/html");
+  res.send(renderedHtml);
+}
 ```
 
-### Production Deployment
+- Dùng Angular `CommonEngine` để SSR
+- Xử lý protocol, base path, header chuẩn
+- Trả về HTML đã render
 
-```typescript
-// server.js
-import { NodeServer } from "@cci-web/server/src/lib/node-server";
-import { bootstrap } from "./dist/main.server.js";
+---
 
-const server = new NodeServer(process.env.PORT || 4000, process.env.BACKEND_PORT || 3000);
+### 4. Route SSR (`setupSSR`)
 
-server.loadBootstrap(bootstrap);
-server.setupSSR();
-server.setupErrorHandling();
-server.start();
+```ts
+this.app.get("*", async (req, res, next) => {
+  if (!fs.existsSync(indexHtmlPath)) {
+    console.error(`[SSR] index.html not found: ${indexHtmlPath}`);
+    res.send("Ứng dụng Angular chưa được build");
+    return;
+  }
+  await this.ssrHandler(req, res, next);
+});
 ```
 
-## Troubleshooting
+- Nếu thiếu file `index.server.html` → trả về thông báo
+- Nếu có → render SSR
 
-### Lỗi thường gặp
+---
 
-1. **Port already in use**
+## Ví dụ sử dụng
 
-   ```
-   ❌ Port 4000 is already in use.
-   ```
+```ts
+const nodeServer = new NodeServer(3000, 8080);
 
-   Giải pháp: Thay đổi port hoặc kill process đang sử dụng port
+nodeServer.loadBootstrap(yourAngularBootstrapFunction);
+nodeServer.setupSSR();
+nodeServer.setupErrorHandling();
+nodeServer.start();
+```
 
-2. **Bootstrap function not loaded**
+---
 
-   ```
-   Bootstrap function not loaded. Call loadBootstrap() first.
-   ```
+## Ghi chú & Thực hành tốt
 
-   Giải pháp: Gọi `server.loadBootstrap()` trước khi setup SSR
+### ✅ Yêu cầu
 
-3. **Index.html not found**
-   ```
-   [SSR] index.html not found
-   ```
-   Giải pháp: Đảm bảo đã build ứng dụng Angular trước khi chạy SSR
+- Có file `index.server.html` hợp lệ
+- Bootstrap Angular được load
+- Backend URL phải hoạt động
 
-## Dependencies
+### ⚠️ Lỗi thường gặp
 
-- `express`: ^4.18.0
-- `http-proxy-middleware`: ^2.0.0
-- `@angular/ssr`: Angular SSR package
-- `@angular/common`: ^19.2.0
-- `@angular/core`: ^19.2.0
+- Thiếu index → `"Ứng dụng Angular chưa được build"`
+- Thiếu bootstrap → SSR lỗi
+- Proxy lỗi → được middleware xử lý
+
+### 🔐 Bảo mật
+
+- Proxy **không** xử lý SSL termination (`secure: false`)
+- Backend API cần cấu hình CORS chuẩn
+
+---
+
+## Sơ đồ cấu hình
+
+```mermaid
+flowchart TD
+    UserRequest["🌐 Request"] --> SSRServer["⚡ SSR Server"]
+    SSRServer -->|/api| APIProxy["🔄 API Proxy"]
+    APIProxy --> Backend["🗄️ Backend"]
+    SSRServer --> StaticAssets["📦 Static Assets (JS, CSS, HTML)"]
+```
+
+---
+
+## Tóm tắt
+
+Cấu hình `NodeServer` cung cấp:
+
+- **SSR Angular liền mạch**
+- **Proxy API** tới backend
+- **Caching tối ưu** cho production
+- Dùng **ngay lập tức** cho deployment Angular

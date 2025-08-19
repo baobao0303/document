@@ -6,7 +6,7 @@ hero:
   name: cci-web
   text: Bộ thư viện hỗ trợ phát triển ứng dụng web theo kiến trúc Micro Frontend.
   image:
-    src: /logo-big.svg
+    src: /Logo.svg
     alt: cci-web logo
   tagline: Giải pháp chia sẻ core và shared library giữa các ứng dụng Angular & SSR.
   actions:
@@ -40,25 +40,17 @@ head:
     - rel: icon
       type: image/svg
       href: logo.svg
----
-
-<!-- Custom home layout -->
-<!-- <div class="custom-layout">
-  <h1>🏀</h1>
-  <h1>Custom Layout</h1>
-  <p>This section was added using plain HTML and CSS.</p>
-  <a href="" target="_blank" class="btn">Source Code</a>
-</div> -->
-<!-- features:
+features:
   - icon: ⚡️
-    title: Adocs, The DX that can't be beat
-    details: Lorem ipsum...
+    title: Hiệu suất cao & DX tuyệt vời
+    details: Được tối ưu hóa cho hiệu suất cao với developer experience không thể so sánh, giúp phát triển ứng dụng nhanh chóng và hiệu quả.
   - icon: 🎉
-    title: Power of Vue meets Markdown
-    details: Lorem ipsum...
+    title: Sức mạnh của Angular & TypeScript
+    details: Kết hợp sức mạnh của Angular framework với TypeScript để xây dựng ứng dụng web hiện đại, type-safe và dễ bảo trì.
   - icon: 🔥
-    title: Simple and minimal, always
-    details: Lorem ipsum...
+    title: Đơn giản & tối giản
+    details: Thiết kế API đơn giản, dễ sử dụng với cấu trúc tối giản giúp developers tập trung vào logic business thay vì boilerplate code.
   - icon: 🎀
-    title: Stylish and cool
-    details: Lorem ipsum... -->
+    title: Micro Frontend Architecture
+    details: Hỗ trợ kiến trúc Micro Frontend cho phép chia sẻ components, services và utilities giữa các ứng dụng một cách linh hoạt.
+---

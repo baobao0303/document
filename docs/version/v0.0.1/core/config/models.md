@@ -4,6 +4,16 @@ Module này chứa các model và interface định nghĩa cấu trúc dữ li�
 
 ## 📋 Danh sách Models
 
+| STT | Model                 | Loại      | Mô tả                                    |
+| --- | --------------------- | --------- | ---------------------------------------- |
+| 1   | AppUserPrincipal      | Class     | Thông tin người dùng hiện tại            |
+| 2   | PermissionRes         | Class     | Thông tin quyền hạn của người dùng       |
+| 3   | ModuleRes             | Class     | Thông tin module trong hệ thống          |
+| 4   | BreadcrumbRes         | Interface | Dữ liệu breadcrumb navigation            |
+| 5   | PagingConfig          | Interface | Cấu hình phân trang                      |
+| 6   | PagingResponse        | Interface | Response API có phân trang               |
+| 7   | SeoSocialShareData    | Interface | Dữ liệu SEO và social media sharing     |
+
 ### 1. AppUserPrincipal
 
 **File**: `app-user-principal.ts`
@@ -22,7 +32,14 @@ export class AppUserPrincipal {
   gender: number; // Giới tính (0: Nữ, 1: Nam)
 
   constructor(currentUser: AppUserPrincipal) {
-    // Constructor copy dữ liệu từ object khác
+    if (currentUser !== null) {
+      this.customer_id = currentUser.customer_id;
+      this.customer_uid = currentUser.customer_uid;
+      this.username = currentUser.username;
+      this.customer_name = currentUser.customer_name;
+      this.avatar_url = currentUser.avatar_url;
+      this.gender = currentUser.gender;
+    }
   }
 }
 ```
@@ -53,7 +70,37 @@ const user = new AppUserPrincipal(userData);
 console.log(user.customer_name); // "John Doe"
 ```
 
-### 2. BreadcrumbRes
+### 2. PermissionRes
+
+**File**: `permission.res.ts`
+
+**Mô tả**: Model cho thông tin quyền hạn của người dùng.
+
+**Cấu trúc**:
+
+```typescript
+class PermissionRes {
+  RoleID: number; // ID vai trò
+  RoleFunctionName: string; // Tên chức năng của vai trò
+}
+```
+
+### 3. ModuleRes
+
+**File**: `module.res.ts`
+
+**Mô tả**: Model cho thông tin module trong hệ thống.
+
+**Cấu trúc**:
+
+```typescript
+class ModuleRes {
+  ModuleName: string; // Tên module
+  ModuleLink: string; // Đường dẫn đến module
+}
+```
+
+### 4. BreadcrumbRes
 
 **File**: `breadcrumb.res.ts`
 
@@ -65,7 +112,6 @@ console.log(user.customer_name); // "John Doe"
 export interface BreadcrumbRes {
   title: string; // Tiêu đề hiển thị
   link: string; // Đường dẫn liên kết
-  isActive: boolean; // Trạng thái active
 }
 ```
 
@@ -82,9 +128,9 @@ import { BreadcrumbRes } from "@cci-web/core";
 
 // Tạo breadcrumb cho trang sản phẩm
 const breadcrumbs: BreadcrumbRes[] = [
-  { title: "Trang chủ", link: "/", isActive: false },
-  { title: "Sản phẩm", link: "/products", isActive: false },
-  { title: "Laptop", link: "/products/laptop", isActive: true },
+  { title: "Trang chủ", link: "/" },
+  { title: "Sản phẩm", link: "/products" },
+  { title: "Laptop", link: "/products/laptop" },
 ];
 
 // Component sử dụng
@@ -106,7 +152,7 @@ export class BreadcrumbComponent {
 }
 ```
 
-### 3. Paging
+### 5. PagingConfig
 
 **File**: `paging.ts`
 
@@ -158,7 +204,7 @@ class PagingHelper {
 }
 ```
 
-### 4. PagingResponse
+### 6. PagingResponse
 
 **File**: `paging.res.ts`
 
@@ -173,7 +219,7 @@ export interface PagingResponse<T> {
   TotalRecord: number; // Tổng số bản ghi
   CurrentPageIndex: number; // Trang hiện tại
   PageSize: number; // Kích thước trang
-  Records: T[]; // Mảng dữ liệu
+  Records: [T]; // Mảng dữ liệu (tuple format)
 }
 ```
 
@@ -243,7 +289,7 @@ export class ProductListComponent {
 }
 ```
 
-### 5. SeoSocialShareData
+### 7. SeoSocialShareData
 
 **File**: `seo-social-share-data.ts`
 
@@ -253,17 +299,16 @@ export class ProductListComponent {
 
 ```typescript
 export interface SeoSocialShareData {
-  title: string; // Tiêu đề trang
-  description: string; // Mô tả trang
-  image: string; // URL hình ảnh đại diện
-  url: string; // URL canonical
-  type: string; // Loại content (article, website, etc.)
-  siteName: string; // Tên website
-  locale: string; // Ngôn ngữ (vi_VN, en_US)
+  title?: string; // Tiêu đề trang (optional)
+  keywords?: string; // Từ khóa SEO (optional)
+  description?: string; // Mô tả trang (optional)
+  image?: string; // URL hình ảnh đại diện (optional)
+  url?: string; // URL canonical (optional)
+  type?: string; // Loại content (optional)
   author?: string; // Tác giả (optional)
-  publishedTime?: string; // Thời gian xuất bản (optional)
-  modifiedTime?: string; // Thời gian cập nhật (optional)
-  tags?: string[]; // Tags/keywords (optional)
+  section?: string; // Phần/danh mục (optional)
+  published?: string; // Thời gian xuất bản (optional)
+  modified?: string; // Thời gian cập nhật (optional)
 }
 ```
 
@@ -360,18 +405,16 @@ export class ModelTransformer {
   static createBreadcrumbFromRoute(route: string): BreadcrumbRes[] {
     const segments = route.split('/').filter(s => s);
     const breadcrumbs: BreadcrumbRes[] = [
-      { title: 'Trang chủ', link: '/', isActive: false }
+      { title: 'Trang chủ', link: '/' }
     ];
 
     let currentPath = '';
     segments.forEach((segment, index) => {
       currentPath += `/${segment}`;
-      const isLast = index === segments.length - 1;
       
       breadcrumbs.push({
         title: segment.charAt(0).toUpperCase() + segment.slice(1),
-        link: currentPath,
-        isActive: isLast
+        link: currentPath
       });
     });
 

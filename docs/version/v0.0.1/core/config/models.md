@@ -2,17 +2,17 @@
 
 Module này chứa các model và interface định nghĩa cấu trúc dữ liệu được sử dụng trong toàn bộ ứng dụng CCI-Web.
 
-## 📋 Danh sách Models
+## Danh sách Models
 
-| STT | Model                 | Loại      | Mô tả                                    |
-| --- | --------------------- | --------- | ---------------------------------------- |
-| 1   | AppUserPrincipal      | Class     | Thông tin người dùng hiện tại            |
-| 2   | PermissionRes         | Class     | Thông tin quyền hạn của người dùng       |
-| 3   | ModuleRes             | Class     | Thông tin module trong hệ thống          |
-| 4   | BreadcrumbRes         | Interface | Dữ liệu breadcrumb navigation            |
-| 5   | PagingConfig          | Interface | Cấu hình phân trang                      |
-| 6   | PagingResponse        | Interface | Response API có phân trang               |
-| 7   | SeoSocialShareData    | Interface | Dữ liệu SEO và social media sharing     |
+| STT | Model              | Loại      | Mô tả                               |
+| --- | ------------------ | --------- | ----------------------------------- |
+| 1   | AppUserPrincipal   | Class     | Thông tin người dùng hiện tại       |
+| 2   | PermissionRes      | Class     | Thông tin quyền hạn của người dùng  |
+| 3   | ModuleRes          | Class     | Thông tin module trong hệ thống     |
+| 4   | BreadcrumbRes      | Interface | Dữ liệu breadcrumb navigation       |
+| 5   | PagingConfig       | Interface | Cấu hình phân trang                 |
+| 6   | PagingResponse     | Interface | Response API có phân trang          |
+| 7   | SeoSocialShareData | Interface | Dữ liệu SEO và social media sharing |
 
 ### 1. AppUserPrincipal
 
@@ -333,7 +333,7 @@ const productSeoData: SeoSocialShareData = {
   type: "product",
   siteName: "CCI Store",
   locale: "vi_VN",
-  tags: ["iPhone", "Apple", "Smartphone", "Cao cấp"]
+  tags: ["iPhone", "Apple", "Smartphone", "Cao cấp"],
 };
 
 // Component sử dụng
@@ -350,7 +350,7 @@ export class ProductDetailComponent implements OnInit {
 }
 ```
 
-## 🔧 Utility Functions
+## Utility Functions
 
 ### Model Validation
 
@@ -363,19 +363,19 @@ export class ModelValidator {
 
   static validatePagingConfig(config: PagingConfig): string[] {
     const errors: string[] = [];
-    
+
     if (config.PageSize <= 0 || config.PageSize > 100) {
-      errors.push('PageSize must be between 1 and 100');
+      errors.push("PageSize must be between 1 and 100");
     }
-    
+
     if (config.CurrentPageIndex <= 0) {
-      errors.push('CurrentPageIndex must be greater than 0');
+      errors.push("CurrentPageIndex must be greater than 0");
     }
-    
+
     if (config.TotalRecord < 0) {
-      errors.push('TotalRecord cannot be negative');
+      errors.push("TotalRecord cannot be negative");
     }
-    
+
     return errors;
   }
 
@@ -403,18 +403,16 @@ export class ModelTransformer {
   }
 
   static createBreadcrumbFromRoute(route: string): BreadcrumbRes[] {
-    const segments = route.split('/').filter(s => s);
-    const breadcrumbs: BreadcrumbRes[] = [
-      { title: 'Trang chủ', link: '/' }
-    ];
+    const segments = route.split("/").filter((s) => s);
+    const breadcrumbs: BreadcrumbRes[] = [{ title: "Trang chủ", link: "/" }];
 
-    let currentPath = '';
+    let currentPath = "";
     segments.forEach((segment, index) => {
       currentPath += `/${segment}`;
-      
+
       breadcrumbs.push({
         title: segment.charAt(0).toUpperCase() + segment.slice(1),
-        link: currentPath
+        link: currentPath,
       });
     });
 
@@ -423,7 +421,7 @@ export class ModelTransformer {
 }
 ```
 
-## 📚 Best Practices
+## Best Practices
 
 ### 1. Type Safety
 
@@ -431,9 +429,9 @@ export class ModelTransformer {
 // ✅ Đúng - Sử dụng generic types
 this.apiService
   .get<PagingResponse<Product>>("/api/products") // ✅ Đúng
-  .subscribe(response => {
+  .subscribe((response) => {
     // TypeScript sẽ biết response.Records là Product[]
-    response.Records.forEach(product => {
+    response.Records.forEach((product) => {
       console.log(product.name); // ✅ Type-safe
     });
   });
@@ -477,10 +475,9 @@ export class UserService {
       return of(cached);
     }
 
-    return this.apiService.getById<AppUserPrincipal>('/api/users', userId)
-      .pipe(
-        tap(user => this.userCache.set(userId, user))
-      );
+    return this.apiService
+      .getById<AppUserPrincipal>("/api/users", userId)
+      .pipe(tap((user) => this.userCache.set(userId, user)));
   }
 
   clearUserCache(userId?: string) {
@@ -493,30 +490,30 @@ export class UserService {
 }
 ```
 
-## 🧪 Testing
+## Testing
 
 ### Model Testing
 
 ```typescript
-describe('ModelValidator', () => {
-  it('should validate AppUserPrincipal correctly', () => {
+describe("ModelValidator", () => {
+  it("should validate AppUserPrincipal correctly", () => {
     const validUser: AppUserPrincipal = {
       customer_id: 1,
-      customer_uid: 'test-uid',
-      username: 'testuser',
-      customer_name: 'Test User',
-      avatar_url: 'https://example.com/avatar.jpg',
-      gender: 1
+      customer_uid: "test-uid",
+      username: "testuser",
+      customer_name: "Test User",
+      avatar_url: "https://example.com/avatar.jpg",
+      gender: 1,
     };
 
     expect(ModelValidator.validateAppUserPrincipal(validUser)).toBe(true);
   });
 
-  it('should invalidate incomplete user data', () => {
+  it("should invalidate incomplete user data", () => {
     const invalidUser = {
       customer_id: 0, // Invalid
-      customer_uid: '',
-      username: ''
+      customer_uid: "",
+      username: "",
     } as AppUserPrincipal;
 
     expect(ModelValidator.validateAppUserPrincipal(invalidUser)).toBe(false);

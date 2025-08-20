@@ -15,10 +15,3 @@ Thư viện chia sẻ các components, directives, pipes, utilities và provider
 | Pipes      | Định dạng và xử lý dữ liệu             |
 | Utils      | Hàm tiện ích và helpers                |
 | Providers  | Injection tokens và provider functions |
-
-## Tiếp tục
-
-| Chủ đề            | Liên kết                                                                                                                           |
-| ----------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
-| Cài đặt           | [Installation](./installation.md)                                                                                                  |
-| Tài liệu chi tiết | [Components](./components.md), [Directives](./directives.md), [Pipes](./pipes.md), [Utils](./utils.md), [Providers](./provider.md) |

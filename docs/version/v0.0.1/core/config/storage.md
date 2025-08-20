@@ -22,680 +22,236 @@ Storage Module cung cấp hệ thống quản lý lưu trữ dữ liệu toàn d
 
 Interface cơ sở định nghĩa API chung cho tất cả storage implementations:
 
-```typescript
-export interface BrowserStorageBase<T = any> {
-  /**
-   * Lưu trữ dữ liệu với key
-   * @param key - Storage key
-   * @param value - Dữ liệu cần lưu
-   * @param options - Tùy chọn lưu trữ (TTL, etc.)
-   */
-  set(key: string, value: T, options?: StorageOptions): void;
+#### Các phương thức chính
 
-  /**
-   * Lấy dữ liệu theo key
-   * @param key - Storage key
-   * @returns Dữ liệu hoặc null nếu không tồn tại
-   */
-  get(key: string): T | null;
-
-  /**
-   * Kiểm tra key có tồn tại không
-   * @param key - Storage key
-   * @returns true nếu key tồn tại
-   */
-  has(key: string): boolean;
-
-  /**
-   * Xóa dữ liệu theo key
-   * @param key - Storage key
-   */
-  remove(key: string): void;
-
-  /**
-   * Xóa tất cả dữ liệu
-   */
-  clear(): void;
-
-  /**
-   * Lấy danh sách tất cả keys
-   * @returns Mảng các keys
-   */
-  keys(): string[];
-
-  /**
-   * Lấy số lượng items trong storage
-   * @returns Số lượng items
-   */
-  get size(): number;
-}
-```
+| Phương thức | Tham số | Trả về | Mô tả |
+|-------------|---------|--------|---------|
+| `set()` | `key: string, value: T, options?: StorageOptions` | `void` | Lưu trữ dữ liệu với key |
+| `get()` | `key: string` | `T \| null` | Lấy dữ liệu theo key |
+| `has()` | `key: string` | `boolean` | Kiểm tra key có tồn tại không |
+| `remove()` | `key: string` | `void` | Xóa dữ liệu theo key |
+| `clear()` | - | `void` | Xóa tất cả dữ liệu |
+| `keys()` | - | `string[]` | Lấy danh sách tất cả keys |
+| `size` | - | `number` | Lấy số lượng items trong storage |
 
 #### Extended Interfaces
 
-```typescript
-/**
- * Interface mở rộng cho cache storage với thống kê
- */
-export interface CacheStorageBase<T = any> extends BrowserStorageBase<T> {
-  /**
-   * Lấy thống kê cache
-   * @returns Thông tin thống kê cache
-   */
-  getStats(): CacheStats;
+**CacheStorageBase** - Interface cho cache với thống kê:
 
-  /**
-   * Thiết lập kích thước tối đa của cache
-   * @param maxSize - Kích thước tối đa
-   */
-  setMaxSize(maxSize: number): void;
-}
+| Phương thức | Tham số | Trả về | Mô tả |
+|-------------|---------|--------|-------|
+| `getStats()` | - | `CacheStats` | Lấy thống kê cache |
+| `setMaxSize()` | `maxSize: number` | `void` | Thiết lập kích thước tối đa |
 
-/**
- * Tùy chọn lưu trữ
- */
-export interface StorageOptions {
-  /** Time to live in milliseconds */
-  ttl?: number;
-  /** Metadata bổ sung */
-  metadata?: Record<string, any>;
-}
+**StorageOptions** - Tùy chọn lưu trữ:
 
-/**
- * Thống kê cache
- */
-export interface CacheStats {
-  /** Số lượng items trong cache */
-  size: number;
-  /** Số lần truy cập thành công */
-  hits: number;
-  /** Số lần truy cập thất bại */
-  misses: number;
-  /** Tỷ lệ hit rate */
-  hitRate: number;
-  /** Kích thước tối đa */
-  maxSize: number;
-}
+| Thuộc tính | Kiểu | Mô tả |
+|------------|------|-------|
+| `ttl?` | `number` | Time to live (milliseconds) |
+| `metadata?` | `Record<string, any>` | Metadata bổ sung |
 
-/**
- * Entry trong storage
- */
-export interface StorageEntry<T = any> {
-  /** Dữ liệu */
-  value: T;
-  /** Thời gian tạo */
-  createdAt: number;
-  /** Thời gian hết hạn */
-  expiresAt?: number;
-  /** Thời gian truy cập cuối */
-  lastAccessed: number;
-  /** Metadata */
-  metadata?: Record<string, any>;
-}
+**CacheStats** - Thống kê cache:
 
-/**
- * Event khi storage thay đổi
- */
-export interface StorageEvent<T = any> {
-  /** Loại event */
-  type: "set" | "remove" | "clear";
-  /** Key bị thay đổi */
-  key?: string;
-  /** Giá trị cũ */
-  oldValue?: T;
-  /** Giá trị mới */
-  newValue?: T;
-  /** Timestamp */
-  timestamp: number;
-}
+| Thuộc tính | Kiểu | Mô tả |
+|------------|------|-------|
+| `size` | `number` | Số lượng items trong cache |
+| `hits` | `number` | Số lần truy cập thành công |
+| `misses` | `number` | Số lần truy cập thất bại |
+| `hitRate` | `number` | Tỷ lệ hit rate |
+| `maxSize` | `number` | Kích thước tối đa |
 
-/**
- * Interface cho observable storage
- */
-export interface ObservableStorageBase<T = any> extends BrowserStorageBase<T> {
-  /**
-   * Observable cho storage events
-   */
-  events$: Observable<StorageEvent<T>>;
+**StorageEntry** - Entry trong storage:
 
-  /**
-   * Observable cho một key cụ thể
-   * @param key - Storage key
-   * @returns Observable của giá trị
-   */
-  watch(key: string): Observable<T | null>;
-}
-```
+| Thuộc tính | Kiểu | Mô tả |
+|------------|------|-------|
+| `value` | `T` | Dữ liệu |
+| `createdAt` | `number` | Thời gian tạo |
+| `expiresAt?` | `number` | Thời gian hết hạn |
+| `lastAccessed` | `number` | Thời gian truy cập cuối |
+| `metadata?` | `Record<string, any>` | Metadata |
+
+**StorageEvent** - Event khi storage thay đổi:
+
+| Thuộc tính | Kiểu | Mô tả |
+|------------|------|-------|
+| `type` | `"set" \| "remove" \| "clear"` | Loại event |
+| `key?` | `string` | Key bị thay đổi |
+| `oldValue?` | `T` | Giá trị cũ |
+| `newValue?` | `T` | Giá trị mới |
+| `timestamp` | `number` | Timestamp |
+
+**ObservableStorageBase** - Interface cho observable storage:
+
+| Thuộc tính/Phương thức | Tham số | Trả về | Mô tả |
+|------------------------|---------|--------|-------|
+| `events$` | - | `Observable<StorageEvent<T>>` | Observable cho storage events |
+| `watch()` | `key: string` | `Observable<T \| null>` | Observable cho một key cụ thể |
 
 ### 2. Cache Service
 
 Service quản lý cache memory với TTL và LRU eviction policy:
 
-```typescript
-@Injectable({
-  providedIn: "root",
-})
-export class CacheService implements CacheStorageBase<any> {
-  private cache = new Map<string, StorageEntry>();
-  private accessOrder = new Map<string, number>();
-  private stats: CacheStats;
-  private maxSize = 100;
-  private accessCounter = 0;
+#### Các phương thức chính
 
-  constructor(private platformService: PlatformService) {
-    this.stats = {
-      size: 0,
-      hits: 0,
-      misses: 0,
-      hitRate: 0,
-      maxSize: this.maxSize,
-    };
-  }
+| Phương thức | Tham số | Trả về | Mô tả |
+|-------------|---------|--------|---------|
+| `set()` | `key: string, value: T, options?: StorageOptions` | `void` | Lưu trữ dữ liệu vào cache với LRU eviction |
+| `get()` | `key: string` | `T \| null` | Lấy dữ liệu từ cache, kiểm tra TTL |
+| `has()` | `key: string` | `boolean` | Kiểm tra key có tồn tại và chưa hết hạn |
+| `remove()` | `key: string` | `void` | Xóa entry khỏi cache |
+| `clear()` | - | `void` | Xóa tất cả entries |
+| `getStats()` | - | `CacheStats` | Lấy thống kê cache (hits, misses, hit rate) |
+| `setMaxSize()` | `maxSize: number` | `void` | Thiết lập kích thước tối đa |
 
-  set(key: string, value: any, options?: StorageOptions): void {
-    const now = Date.now();
-    const entry: StorageEntry = {
-      value,
-      createdAt: now,
-      lastAccessed: now,
-      expiresAt: options?.ttl ? now + options.ttl : undefined,
-      metadata: options?.metadata,
-    };
+#### Tính năng đặc biệt
 
-    // Xóa entry cũ nếu tồn tại
-    if (this.cache.has(key)) {
-      this.cache.delete(key);
-      this.accessOrder.delete(key);
-    }
-
-    // Kiểm tra kích thước tối đa
-    if (this.cache.size >= this.maxSize) {
-      this.evictLRU();
-    }
-
-    this.cache.set(key, entry);
-    this.accessOrder.set(key, ++this.accessCounter);
-    this.updateStats();
-  }
-
-  get(key: string): any | null {
-    const entry = this.cache.get(key);
-
-    if (!entry) {
-      this.stats.misses++;
-      this.updateHitRate();
-      return null;
-    }
-
-    // Kiểm tra TTL
-    if (entry.expiresAt && Date.now() > entry.expiresAt) {
-      this.remove(key);
-      this.stats.misses++;
-      this.updateHitRate();
-      return null;
-    }
-
-    // Cập nhật last accessed
-    entry.lastAccessed = Date.now();
-    this.accessOrder.set(key, ++this.accessCounter);
-
-    this.stats.hits++;
-    this.updateHitRate();
-    return entry.value;
-  }
-
-  has(key: string): boolean {
-    const entry = this.cache.get(key);
-    if (!entry) return false;
-
-    // Kiểm tra TTL
-    if (entry.expiresAt && Date.now() > entry.expiresAt) {
-      this.remove(key);
-      return false;
-    }
-
-    return true;
-  }
-
-  remove(key: string): void {
-    this.cache.delete(key);
-    this.accessOrder.delete(key);
-    this.updateStats();
-  }
-
-  clear(): void {
-    this.cache.clear();
-    this.accessOrder.clear();
-    this.accessCounter = 0;
-    this.updateStats();
-  }
-
-  keys(): string[] {
-    return Array.from(this.cache.keys());
-  }
-
-  get size(): number {
-    return this.cache.size;
-  }
-
-  getStats(): CacheStats {
-    return { ...this.stats };
-  }
-
-  setMaxSize(maxSize: number): void {
-    this.maxSize = maxSize;
-    this.stats.maxSize = maxSize;
-
-    // Evict nếu cần
-    while (this.cache.size > maxSize) {
-      this.evictLRU();
-    }
-  }
-
-  private evictLRU(): void {
-    let oldestKey: string | null = null;
-    let oldestAccess = Infinity;
-
-    for (const [key, accessTime] of this.accessOrder) {
-      if (accessTime < oldestAccess) {
-        oldestAccess = accessTime;
-        oldestKey = key;
-      }
-    }
-
-    if (oldestKey) {
-      this.remove(oldestKey);
-    }
-  }
-
-  private updateStats(): void {
-    this.stats.size = this.cache.size;
-  }
-
-  private updateHitRate(): void {
-    const total = this.stats.hits + this.stats.misses;
-    this.stats.hitRate = total > 0 ? this.stats.hits / total : 0;
-  }
-}
-```
+- **LRU Eviction**: Tự động xóa entries ít được sử dụng nhất khi đạt maxSize
+- **TTL Support**: Hỗ trợ thời gian hết hạn cho từng entry
+- **Statistics**: Theo dõi hits, misses và hit rate để đánh giá hiệu suất
+- **Access Tracking**: Theo dõi thời gian truy cập để thực hiện LRU
+- **Metadata**: Lưu trữ thông tin bổ sung cho mỗi entry
 
 ### 3. Local Storage Service
 
 SSR-safe wrapper cho localStorage API:
 
-```typescript
-@Injectable({
-  providedIn: "root",
-})
-export class LocalStorageService implements BrowserStorageBase<string> {
-  constructor(private platformService: PlatformService) {}
+#### Các phương thức chính
 
-  set(key: string, value: string, options?: StorageOptions): void {
-    if (!this.platformService.isBrowser()) {
-      return;
-    }
+| Phương thức | Tham số | Trả về | Mô tả |
+|-------------|---------|--------|---------||
+| `set()` | `key: string, value: string, options?: StorageOptions` | `void` | Lưu trữ dữ liệu vào localStorage với TTL |
+| `get()` | `key: string` | `string \| null` | Lấy dữ liệu từ localStorage, kiểm tra TTL |
+| `has()` | `key: string` | `boolean` | Kiểm tra key có tồn tại và chưa hết hạn |
+| `remove()` | `key: string` | `void` | Xóa entry khỏi localStorage |
+| `clear()` | - | `void` | Xóa tất cả entries |
+| `keys()` | - | `string[]` | Lấy danh sách tất cả keys |
+| `size` | - | `number` | Lấy số lượng items |
 
-    try {
-      const entry: StorageEntry<string> = {
-        value,
-        createdAt: Date.now(),
-        lastAccessed: Date.now(),
-        expiresAt: options?.ttl ? Date.now() + options.ttl : undefined,
-        metadata: options?.metadata,
-      };
+#### Tính năng đặc biệt
 
-      localStorage.setItem(key, JSON.stringify(entry));
-    } catch (error) {
-      console.warn("LocalStorage set failed:", error);
-    }
-  }
-
-  get(key: string): string | null {
-    if (!this.platformService.isBrowser()) {
-      return null;
-    }
-
-    try {
-      const item = localStorage.getItem(key);
-      if (!item) return null;
-
-      const entry: StorageEntry<string> = JSON.parse(item);
-
-      // Kiểm tra TTL
-      if (entry.expiresAt && Date.now() > entry.expiresAt) {
-        this.remove(key);
-        return null;
-      }
-
-      // Cập nhật last accessed
-      entry.lastAccessed = Date.now();
-      localStorage.setItem(key, JSON.stringify(entry));
-
-      return entry.value;
-    } catch (error) {
-      console.warn("LocalStorage get failed:", error);
-      return null;
-    }
-  }
-
-  has(key: string): boolean {
-    if (!this.platformService.isBrowser()) {
-      return false;
-    }
-
-    try {
-      const item = localStorage.getItem(key);
-      if (!item) return false;
-
-      const entry: StorageEntry<string> = JSON.parse(item);
-
-      // Kiểm tra TTL
-      if (entry.expiresAt && Date.now() > entry.expiresAt) {
-        this.remove(key);
-        return false;
-      }
-
-      return true;
-    } catch (error) {
-      return false;
-    }
-  }
-
-  remove(key: string): void {
-    if (!this.platformService.isBrowser()) {
-      return;
-    }
-
-    try {
-      localStorage.removeItem(key);
-    } catch (error) {
-      console.warn("LocalStorage remove failed:", error);
-    }
-  }
-
-  clear(): void {
-    if (!this.platformService.isBrowser()) {
-      return;
-    }
-
-    try {
-      localStorage.clear();
-    } catch (error) {
-      console.warn("LocalStorage clear failed:", error);
-    }
-  }
-
-  keys(): string[] {
-    if (!this.platformService.isBrowser()) {
-      return [];
-    }
-
-    try {
-      return Object.keys(localStorage);
-    } catch (error) {
-      console.warn("LocalStorage keys failed:", error);
-      return [];
-    }
-  }
-
-  get size(): number {
-    if (!this.platformService.isBrowser()) {
-      return 0;
-    }
-
-    try {
-      return localStorage.length;
-    } catch (error) {
-      return 0;
-    }
-  }
-}
-```
+- **SSR Safe**: Kiểm tra `isBrowser()` trước khi truy cập localStorage
+- **Error Handling**: Xử lý lỗi khi localStorage không khả dụng
+- **Auto Serialization**: Tự động serialize/deserialize objects với StorageEntry
+- **TTL Support**: Hỗ trợ thời gian hết hạn cho entries
+- **Metadata**: Lưu trữ thông tin bổ sung (createdAt, lastAccessed)
+- **Access Tracking**: Cập nhật lastAccessed khi get data
 
 ### 4. Session Storage Service
 
 SSR-safe wrapper cho sessionStorage API:
 
-```typescript
-@Injectable({
-  providedIn: "root",
-})
-export class SessionStorageService implements BrowserStorageBase<string> {
-  constructor(private platformService: PlatformService) {}
+#### Các phương thức chính
 
-  set(key: string, value: string, options?: StorageOptions): void {
-    if (!this.platformService.isBrowser()) {
-      return;
-    }
+| Phương thức | Tham số | Trả về | Mô tả |
+|-------------|---------|--------|---------||
+| `set()` | `key: string, value: string, options?: StorageOptions` | `void` | Lưu trữ dữ liệu vào sessionStorage với TTL |
+| `get()` | `key: string` | `string \| null` | Lấy dữ liệu từ sessionStorage, kiểm tra TTL |
+| `has()` | `key: string` | `boolean` | Kiểm tra key có tồn tại và chưa hết hạn |
+| `remove()` | `key: string` | `void` | Xóa entry khỏi sessionStorage |
+| `clear()` | - | `void` | Xóa tất cả entries |
+| `keys()` | - | `string[]` | Lấy danh sách tất cả keys |
+| `size` | - | `number` | Lấy số lượng items |
 
-    try {
-      const entry: StorageEntry<string> = {
-        value,
-        createdAt: Date.now(),
-        lastAccessed: Date.now(),
-        expiresAt: options?.ttl ? Date.now() + options.ttl : undefined,
-        metadata: options?.metadata,
-      };
+#### Tính năng đặc biệt
 
-      sessionStorage.setItem(key, JSON.stringify(entry));
-    } catch (error) {
-      console.warn("SessionStorage set failed:", error);
-    }
-  }
-
-  get(key: string): string | null {
-    if (!this.platformService.isBrowser()) {
-      return null;
-    }
-
-    try {
-      const item = sessionStorage.getItem(key);
-      if (!item) return null;
-
-      const entry: StorageEntry<string> = JSON.parse(item);
-
-      // Kiểm tra TTL
-      if (entry.expiresAt && Date.now() > entry.expiresAt) {
-        this.remove(key);
-        return null;
-      }
-
-      // Cập nhật last accessed
-      entry.lastAccessed = Date.now();
-      sessionStorage.setItem(key, JSON.stringify(entry));
-
-      return entry.value;
-    } catch (error) {
-      console.warn("SessionStorage get failed:", error);
-      return null;
-    }
-  }
-
-  has(key: string): boolean {
-    if (!this.platformService.isBrowser()) {
-      return false;
-    }
-
-    try {
-      const item = sessionStorage.getItem(key);
-      if (!item) return false;
-
-      const entry: StorageEntry<string> = JSON.parse(item);
-
-      // Kiểm tra TTL
-      if (entry.expiresAt && Date.now() > entry.expiresAt) {
-        this.remove(key);
-        return false;
-      }
-
-      return true;
-    } catch (error) {
-      return false;
-    }
-  }
-
-  remove(key: string): void {
-    if (!this.platformService.isBrowser()) {
-      return;
-    }
-
-    try {
-      sessionStorage.removeItem(key);
-    } catch (error) {
-      console.warn("SessionStorage remove failed:", error);
-    }
-  }
-
-  clear(): void {
-    if (!this.platformService.isBrowser()) {
-      return;
-    }
-
-    try {
-      sessionStorage.clear();
-    } catch (error) {
-      console.warn("SessionStorage clear failed:", error);
-    }
-  }
-
-  keys(): string[] {
-    if (!this.platformService.isBrowser()) {
-      return [];
-    }
-
-    try {
-      return Object.keys(sessionStorage);
-    } catch (error) {
-      console.warn("SessionStorage keys failed:", error);
-      return [];
-    }
-  }
-
-  get size(): number {
-    if (!this.platformService.isBrowser()) {
-      return 0;
-    }
-
-    try {
-      return sessionStorage.length;
-    } catch (error) {
-      return 0;
-    }
-  }
-}
-```
+- **Session Scope**: Dữ liệu chỉ tồn tại trong phiên làm việc hiện tại
+- **SSR Safe**: Kiểm tra `isBrowser()` trước khi truy cập sessionStorage
+- **Error Handling**: Xử lý lỗi khi sessionStorage không khả dụng
+- **Auto Serialization**: Tự động serialize/deserialize objects với StorageEntry
+- **TTL Support**: Hỗ trợ thời gian hết hạn cho entries
+- **Metadata**: Lưu trữ thông tin bổ sung (createdAt, lastAccessed)
+- **Access Tracking**: Cập nhật lastAccessed khi get data
 
 ## Cách sử dụng
 
-### Sử dụng Cache Service
+### 1. Cache Service
+
+#### Các thao tác cơ bản
+
+| Thao tác | Code | Mô tả |
+|----------|------|-------|
+| Lưu trữ với TTL | `cacheService.set('key', data, { ttl: 300000 })` | Lưu 5 phút |
+| Lấy dữ liệu | `const data = cacheService.get('key')` | Trả về null nếu hết hạn |
+| Kiểm tra thống kê | `const stats = cacheService.getStats()` | Xem hit rate, size |
+| Thiết lập max size | `cacheService.setMaxSize(200)` | Giới hạn 200 entries |
+
+#### Ví dụ sử dụng trong Component
 
 ```typescript
-import { CacheService } from "@cci-web/core/storage";
-
 @Component({
   selector: "app-product-list",
   templateUrl: "./product-list.component.html",
 })
-export class ProductListComponent implements OnInit {
-  products: Product[] = [];
-
-  constructor(private cacheService: CacheService, private productService: ProductService) {}
-
-  ngOnInit() {
-    this.loadProducts();
-  }
+export class ProductListComponent {
+  constructor(private cacheService: CacheService) {}
 
   loadProducts() {
-    const cacheKey = "products-list";
-
     // Kiểm tra cache trước
-    const cachedProducts = this.cacheService.get(cacheKey);
-    if (cachedProducts) {
-      this.products = cachedProducts;
-      return;
-    }
-
-    // Load từ API và cache kết quả
-    this.productService.getProducts().subscribe((products) => {
-      this.products = products;
-      // Cache trong 5 phút
-      this.cacheService.set(cacheKey, products, { ttl: 300000 });
-    });
-  }
-
-  clearCache() {
-    this.cacheService.clear();
-  }
-
-  getCacheStats() {
-    const stats = this.cacheService.getStats();
-    console.log("Cache hit rate:", stats.hitRate);
-    console.log("Cache size:", stats.size);
+    const cached = this.cacheService.get('products');
+    if (cached) return cached;
+    
+    // Load và cache kết quả
+    return this.api.getProducts().pipe(
+      tap(data => this.cacheService.set('products', data, { ttl: 300000 }))
+    );
   }
 }
 ```
 
-### Sử dụng Local Storage Service
+### 2. Local Storage Service
+
+#### Các thao tác cơ bản
+
+| Thao tác | Code | Mô tả |
+|----------|------|-------|
+| Lưu với TTL | `localStorage.set('settings', data, { ttl: 86400000 })` | Lưu 24 giờ |
+| Lưu với metadata | `localStorage.set('key', data, { metadata: { v: '1.0' } })` | Kèm thông tin phiên bản |
+| Lấy dữ liệu | `const data = localStorage.get('settings')` | Auto deserialize |
+| Kiểm tra tồn tại | `if (localStorage.has('key')) { ... }` | Kiểm tra key + TTL |
+
+#### Ví dụ User Preferences Service
 
 ```typescript
-import { LocalStorageService } from "@cci-web/core/storage";
-
-@Injectable({
-  providedIn: "root",
-})
+@Injectable({ providedIn: "root" })
 export class UserPreferencesService {
   constructor(private localStorage: LocalStorageService) {}
 
-  saveUserPreferences(preferences: UserPreferences) {
-    this.localStorage.set(
-      "user-preferences",
-      JSON.stringify(preferences),
-      { ttl: 30 * 24 * 60 * 60 * 1000 } // 30 ngày
-    );
+  save(prefs: UserPreferences) {
+    this.localStorage.set('user-prefs', JSON.stringify(prefs), 
+      { ttl: 30 * 24 * 60 * 60 * 1000 }); // 30 ngày
   }
 
-  getUserPreferences(): UserPreferences | null {
-    const data = this.localStorage.get("user-preferences");
+  get(): UserPreferences | null {
+    const data = this.localStorage.get('user-prefs');
     return data ? JSON.parse(data) : null;
-  }
-
-  clearUserPreferences() {
-    this.localStorage.remove("user-preferences");
-  }
-
-  hasUserPreferences(): boolean {
-    return this.localStorage.has("user-preferences");
   }
 }
 ```
 
-### Sử dụng Session Storage Service
+### 3. Session Storage Service
+
+#### Các thao tác cơ bản
+
+| Thao tác | Code | Mô tả |
+|----------|------|-------|
+| Lưu dữ liệu session | `sessionStorage.set('temp-data', data)` | Chỉ tồn tại trong session |
+| Lấy dữ liệu | `const data = sessionStorage.get('temp-data')` | Trả về null nếu không có |
+| Xóa khi đóng tab | Tự động | SessionStorage tự xóa khi đóng tab |
+
+#### Ví dụ Shopping Cart Service
 
 ```typescript
-import { SessionStorageService } from "@cci-web/core/storage";
-
-@Injectable({
-  providedIn: "root",
-})
+@Injectable({ providedIn: "root" })
 export class ShoppingCartService {
   constructor(private sessionStorage: SessionStorageService) {}
 
   saveCart(cart: CartItem[]) {
-    this.sessionStorage.set("shopping-cart", JSON.stringify(cart));
+    this.sessionStorage.set('cart', JSON.stringify(cart));
   }
 
   getCart(): CartItem[] {
-    const data = this.sessionStorage.get("shopping-cart");
+    const data = this.sessionStorage.get('cart');
     return data ? JSON.parse(data) : [];
-  }
-
-  clearCart() {
-    this.sessionStorage.remove("shopping-cart");
-  }
-
-  getCartSize(): number {
-    const cart = this.getCart();
-    return cart.length;
   }
 }
 ```

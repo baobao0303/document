@@ -15,11 +15,11 @@ export default {
     // Navbar Link
     nav: [
       { text: "Home", link: "/" },
-      { text: "Docs", link: "/version/v0.0.1" },
+      { text: "Docs", link: "/version/v0.0.1/get-started/introduction" },
       {
         // Dropdown Menu
         text: "Version",
-        items: [{ text: "v0.0.1", link: "/version/v0.0.1" }],
+        items: [{ text: "v0.0.1", link: "/version/v0.0.1/get-started/introduction" }],
       },
     ],
     // Social Icons
@@ -52,13 +52,13 @@ export default {
                 collapsible: true,
                 collapsed: false,
                 items: [
-                  {
-                    text: "Introduction",
-                    link: "/version/v0.0.1/core/config/introduction",
-                  },
+                  // {
+                  //   text: "Introduction",
+                  //   link: "/version/v0.0.1/core/config/introduction",
+                  // },
                   { text: "Constants", link: "/version/v0.0.1/core/config/constants" },
                   { text: "Interceptors", link: "/version/v0.0.1/core/config/interceptors/interceptors" },
-                  { text: "Models", link: "/version/v0.0.1/core/config/models/models" },
+                  { text: "Models", link: "/version/v0.0.1/core/config/models" },
                   { text: "Providers", link: "/version/v0.0.1/core/config/providers" },
 
                   {
@@ -175,8 +175,8 @@ export default {
       text: "Edit this page on GitHub",
     },
     footer: {
-      message: 'A library created with ❤️ by <a href="https://github.com/your-username" target="_blank">this guy</a>',
-      copyright: "© 2023 CCI Web",
+      message: 'Được xây dựng với ❤️ và đam mê bởi <a href="https://github.com/your-username" target="_blank">đội ngũ CCI Web</a>',
+      copyright: "© 2025 - Present CCI Web",
     },
     markdown: {
       theme: "material-palenight",

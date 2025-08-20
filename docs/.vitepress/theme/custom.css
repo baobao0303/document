@@ -195,6 +195,15 @@ body:not(:has(.VPContent.is-home)) .VPNavBarMenu {
   margin: 1rem 0 !important;
 }
 
+/* Make first column (STT) narrower */
+.vp-doc table th:first-child,
+.vp-doc table td:first-child {
+  width: 180px !important;
+  min-width: 180px !important;
+  max-width: 180px !important;
+  text-align: center !important;
+}
+
 /* If VitePress wraps tables in a container, make wrapper full width */
 .vp-doc .table,
 .vp-doc .vp-table,

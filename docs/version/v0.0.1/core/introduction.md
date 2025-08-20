@@ -1,7 +1,7 @@
 # Giới thiệu
 
-**@cci-web/core** là thư viện nền tảng (core library) được sử dụng chung cho toàn bộ hệ thống Micro Frontend của CCI.  
-Nó cung cấp các thành phần và dịch vụ cơ bản giúp cho việc phát triển ứng dụng nhất quán, tái sử dụng cao và dễ bảo trì.
+- **@cci-web/core** là thư viện nền tảng (core library) được sử dụng chung cho toàn bộ hệ thống Micro Frontend.
+- Nó cung cấp các thành phần và dịch vụ cơ bản giúp cho việc phát triển ứng dụng nhất quán, tái sử dụng cao và dễ bảo trì.
 
 ## Mục đích
 

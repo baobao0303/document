@@ -1,14 +1,14 @@
-# Provider Setup
+# Cài đặt Provider
 
-This guide will walk you through setting up providers for both `@cci-web/core` and `@cci-web/shared` modules in your Angular application using the modern standalone approach with `ApplicationConfig`.
+Hướng dẫn này sẽ giúp bạn thiết lập providers cho cả hai module `@cci-web/core` và `@cci-web/shared` trong ứng dụng Angular của bạn sử dụng phương pháp standalone hiện đại với `ApplicationConfig`.
 
-## Overview
+## Tổng quan
 
-Providers are essential components that configure and initialize services, interceptors, and other dependencies required by the CCI Web libraries. This guide shows the complete setup using real-world configuration from a production application.
+Providers là các thành phần thiết yếu để cấu hình và khởi tạo các services, interceptors và các dependencies khác được yêu cầu bởi thư viện CCI Web. Hướng dẫn này trình bày cách thiết lập hoàn chỉnh sử dụng cấu hình thực tế từ ứng dụng production.
 
 ## Required Constants and Configuration
 
-Before setting up providers, you need to define your application constants:
+Trước khi thiết lập providers, bạn cần định nghĩa các hằng số ứng dụng:
 
 ```typescript
 // config/app-config.ts
@@ -43,9 +43,9 @@ export const GATEWAY_API = {
 };
 ```
 
-## Core Module Provider Setup
+## Thiết lập Provider cho Core Module
 
-### 1. Import Required Modules
+### 1. Import các Module cần thiết
 
 ```typescript
 import { 
@@ -74,7 +74,7 @@ import {
 } from "@cci-web/shared";
 ```
 
-### 2. Core Provider Setup with Real Configuration
+### 2. Thiết lập Core Provider với cấu hình thực tế
 
 ```typescript
 // Shared CCI Web Core Configuration
@@ -135,9 +135,9 @@ export const baseProviders = [
 ];
 ```
 
-## Shared Module Provider Setup
+## Thiết lập Provider cho Shared Module
 
-### 1. Common Providers Configuration
+### 1. Cấu hình Common Providers
 
 ```typescript
 // Common Providers
@@ -158,7 +158,7 @@ export const commonProviders = [
 ];
 ```
 
-### 2. Application Configuration Setup
+### 2. Thiết lập cấu hình ứng dụng
 
 ```typescript
 // Initialize Application function
@@ -207,7 +207,7 @@ export const appConfig: ApplicationConfig = {
 };
 ```
 
-## Advanced Configuration
+## Cấu hình nâng cao
 
 ### Custom Service Providers
 
@@ -230,7 +230,7 @@ export class CustomConfigService extends CciConfigService {
 })
 ```
 
-### HTTP Interceptor Configuration
+### Cấu hình HTTP Interceptor
 
 ```typescript
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -252,7 +252,7 @@ import { AuthInterceptor, LoggingInterceptor } from '@cci-web/core';
 })
 ```
 
-## Feature Module Setup
+## Thiết lập Feature Module
 
 ### Lazy-Loaded Modules
 
@@ -328,16 +328,16 @@ TestBed.configureTestingModule({
 });
 ```
 
-## Troubleshooting
+## Khắc phục sự cố
 
-### Common Issues
+### Các vấn đề thường gặp
 
-1. **Module Import Order**: Ensure `CciCoreModule.forRoot()` is imported before other CCI modules
-2. **Multiple forRoot() Calls**: Only call `forRoot()` once in your root module
-3. **Missing Dependencies**: Verify all peer dependencies are installed
-4. **Configuration Conflicts**: Check for conflicting provider configurations
+1. **Thứ tự Import Module**: Đảm bảo `CciCoreModule.forRoot()` được import trước các CCI modules khác
+2. **Nhiều lần gọi forRoot()**: Chỉ gọi `forRoot()` một lần trong root module của bạn
+3. **Thiếu Dependencies**: Xác minh tất cả peer dependencies đã được cài đặt
+4. **Xung đột cấu hình**: Kiểm tra các cấu hình provider có xung đột
 
-### Debug Mode
+### Chế độ Debug
 
 ```typescript
 CciCoreModule.forRoot({
@@ -346,17 +346,17 @@ CciCoreModule.forRoot({
 })
 ```
 
-## Next Steps
+## Các bước tiếp theo
 
 - [Core Module Configuration](/version/v0.0.1/core/config/introduction)
 - [Shared Components](/version/v0.0.1/shared/components)
 - [API Services](/version/v0.0.1/core/config/services)
 - [Custom Providers](/version/v0.0.1/core/config/providers)
 
-## Support
+## Hỗ trợ
 
-If you encounter issues with provider setup:
+Nếu bạn gặp vấn đề với việc thiết lập provider:
 
-- Check the [FAQ](/faq) for common solutions
-- Review the [Troubleshooting Guide](/troubleshooting)
-- Contact [Community Support](/community)
+- Kiểm tra [FAQ](/faq) để tìm các giải pháp thường gặp
+- Xem lại [Hướng dẫn khắc phục sự cố](/troubleshooting)
+- Liên hệ [Hỗ trợ cộng đồng](/community)

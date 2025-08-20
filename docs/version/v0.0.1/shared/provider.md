@@ -80,7 +80,7 @@ export function provideSharedEnvironment(environment: ISharedEnvironment): Provi
 }
 ```
 
-#### Sử dụng
+#### Cách sử dụng
 
 ```typescript
 import { provideSharedEnvironment, SHARED_ENVIRONMENT, ISharedEnvironment } from "@cci-web/shared";
@@ -307,9 +307,9 @@ export class MockDataAdapter implements DataPort {
 }
 ```
 
-## Best Practices
+## Thực hành tốt nhất
 
-### 1. Environment Configuration
+### 1. Cấu hình môi trường
 
 ```typescript
 // Tốt: Sử dụng interface để type-safe
@@ -327,7 +327,7 @@ const badConfig = {
 };
 ```
 
-### 2. Optional Injection
+### 2. Injection tùy chọn
 
 ```typescript
 // Tốt: Sử dụng @Optional() cho providers có thể không có
@@ -345,7 +345,7 @@ constructor(
 ) {}
 ```
 
-### 3. Error Handling
+### 3. Xử lý lỗi
 
 ```typescript
 // Tốt: Handle errors trong Observable streams
@@ -361,7 +361,7 @@ this.loadingService?.loading$
   });
 ```
 
-### 4. Memory Management
+### 4. Quản lý bộ nhớ
 
 ```typescript
 // Tốt: Unsubscribe để tránh memory leaks
@@ -381,9 +381,9 @@ export class MyComponent implements OnInit, OnDestroy {
 }
 ```
 
-## Testing
+## Kiểm thử
 
-### Unit Testing Providers
+### Kiểm thử đơn vị Providers
 
 ```typescript
 describe("SharedProvider", () => {
@@ -407,7 +407,7 @@ describe("SharedProvider", () => {
 });
 ```
 
-### Integration Testing
+### Kiểm thử tích hợp
 
 ```typescript
 describe("Component with Providers", () => {
@@ -442,7 +442,7 @@ describe("Component with Providers", () => {
 });
 ```
 
-## Troubleshooting
+## Khắc phục sự cố
 
 ### Lỗi thường gặp
 
@@ -468,7 +468,7 @@ describe("Component with Providers", () => {
    ```
    **Giải pháp**: Đảm bảo implementation tuân thủ đúng interface
 
-### Debug Tips
+### Mẹo Debug
 
 ```typescript
 // Log provider injection để debug

@@ -5,9 +5,11 @@ export default {
   cleanUrls: true,
   // If this is disabled, when building it it will give deadlink errors if your markdown has the wrong links
   ignoreDeadLinks: true,
+  // Base path for deployment (uncomment and set if deploying to subdirectory)
+  // base: '/your-repo-name/',
 
   themeConfig: {
-    logo: "https://cdn1.concung.com/themes/desktop4.1/image/logo-concung.png",
+    logo: "/Logo.svg",
     siteTitle: false,
     search: {
       provider: "local",
@@ -59,78 +61,34 @@ export default {
                   { text: "Constants", link: "/version/v0.0.1/core/config/constants" },
                   { text: "Interceptors", link: "/version/v0.0.1/core/config/interceptors/interceptors" },
                   { text: "Models", link: "/version/v0.0.1/core/config/models" },
-                  { text: "Providers", link: "/version/v0.0.1/core/config/providers" },
-
                   {
-                    text: "Services",
+                    text: "Provider",
                     collapsible: true,
                     collapsed: true,
                     items: [
                       {
-                        text: "UI Services",
-                        collapsible: true,
-                        collapsed: true,
-                        items: [
-                          { text: "Breakpoint Service", link: "/version/v0.0.1/core/config/services/ui/breakpoint" },
-                          {
-                            text: "Loading Spinner Service",
-                            link: "/version/v0.0.1/core/config/services/ui/loading-spinner",
-                          },
-                          {
-                            text: "Notification Service",
-                            link: "/version/v0.0.1/core/config/services/ui/notification",
-                          },
-                          { text: "Open Menu Service", link: "/version/v0.0.1/core/config/services/ui/open-menu" },
-                          { text: "Overlay Service", link: "/version/v0.0.1/core/config/services/ui/overlay" },
-                          { text: "Responsive Service", link: "/version/v0.0.1/core/config/services/ui/responsive" },
-                          {
-                            text: "Search Event Bridge Service",
-                            link: "/version/v0.0.1/core/config/services/ui/search-event-bridge",
-                          },
-                        ],
+                        text: "Tổng quan",
+                        link: "/version/v0.0.1/core/provider/introduction",
                       },
                       {
-                        text: "Common Services",
-                        collapsible: true,
-                        collapsed: true,
-                        items: [
-                          { text: "API Service", link: "/version/v0.0.1/core/config/services/common/api" },
-                          { text: "Auth Service", link: "/version/v0.0.1/core/config/services/common/auth" },
-                          { text: "Base API Service", link: "/version/v0.0.1/core/config/services/common/base-api" },
-                          {
-                            text: "Browser Refresh Service",
-                            link: "/version/v0.0.1/core/config/services/common/browser-refresh",
-                          },
-                          {
-                            text: "Config Merge Service",
-                            link: "/version/v0.0.1/core/config/services/common/config-merge",
-                          },
-                          { text: "Cookie Service", link: "/version/v0.0.1/core/config/services/common/cookie" },
-                          { text: "Document Service", link: "/version/v0.0.1/core/config/services/common/document" },
-                          { text: "Platform Service", link: "/version/v0.0.1/core/config/services/common/platform" },
-                          {
-                            text: "Request Cache Service",
-                            link: "/version/v0.0.1/core/config/services/common/request-cache",
-                          },
-                          { text: "SEO Service", link: "/version/v0.0.1/core/config/services/common/seo" },
-                          { text: "Window Service", link: "/version/v0.0.1/core/config/services/common/window" },
-                        ],
+                        text: "Base Provider",
+                        link: "/version/v0.0.1/core/provider/baseProvider",
                       },
                       {
-                        text: "Remote Services",
-                        collapsible: true,
-                        collapsed: true,
-                        items: [
-                          {
-                            text: "App Initialize Service",
-                            link: "/version/v0.0.1/core/config/services/remote/app-initialize",
-                          },
-                          { text: "Loader Service", link: "/version/v0.0.1/core/config/services/remote/loader" },
-                          {
-                            text: "Remote CSS Service",
-                            link: "/version/v0.0.1/core/config/services/remote/remote-css",
-                          },
-                        ],
+                        text: "Environment Provider",
+                        link: "/version/v0.0.1/core/provider/environmentProvider",
+                      },
+                      {
+                        text: "Translate Provider",
+                        link: "/version/v0.0.1/core/provider/translateProvider",
+                      },
+                      {
+                        text: "Initialized Provider",
+                        link: "/version/v0.0.1/core/provider/initializedProvider",
+                      },
+                      {
+                        text: "View Context",
+                        link: "/version/v0.0.1/core/provider/viewContext",
                       },
                     ],
                   },
@@ -175,7 +133,8 @@ export default {
       text: "Edit this page on GitHub",
     },
     footer: {
-      message: 'Được xây dựng với ❤️ và đam mê bởi <a href="https://github.com/your-username" target="_blank">đội ngũ CCI Web</a>',
+      message:
+        'Được xây dựng với ❤️ và đam mê bởi <a href="https://github.com/your-username" target="_blank">đội ngũ CCI Web</a>',
       copyright: "© 2025 - Present CCI Web",
     },
     markdown: {
